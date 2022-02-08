@@ -30,3 +30,24 @@ for these vocab items
 - let users review the vocab items and their 
 related information
 
+### User Stories
+
+- As a user, I want to be able to add a 
+new vocabulary item to my vocab list
+- As a user, I want to be able to store the 
+definition and translation with the 
+vocabulary item
+- As a user, I want to be able to record the 
+original learning context for particular 
+vocabulary items
+- As a user, I want to be able to view the 
+list of vocabulary items in my vocab list
+- As a user, I want to be able to go into
+specific vocabulary items to view information 
+attached to them
+- As a user, I want to be able to go into 
+specific vocabulary items to edit and update
+information attached to them
+- As a user, I want to be able to delete
+vocabulary items from the vocab list
+
