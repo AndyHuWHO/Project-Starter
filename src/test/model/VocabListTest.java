@@ -2,8 +2,9 @@ package model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
-import java.util.ArrayList;
+
 
 public class VocabListTest {
     private VocabList testVocabList;
@@ -19,19 +20,18 @@ public class VocabListTest {
 
     @Test
     void testVocabListConstructor() {
-        assertEquals(0,testVocabList.getSize());
+        assertEquals(0, testVocabList.getSize());
     }
 
     @Test
     void testAddVocab() {
         testVocabList.addVocab(vocab1);
-        assertEquals(1,testVocabList.getSize());
+        assertEquals(1, testVocabList.getSize());
         assertTrue(testVocabList.containsVocab(vocab1));
         testVocabList.addVocab(vocab2);
-        assertEquals(2,testVocabList.getSize());
+        assertEquals(2, testVocabList.getSize());
         assertTrue(testVocabList.containsVocab(vocab1));
         assertTrue(testVocabList.containsVocab(vocab2));
     }
-
 
 }

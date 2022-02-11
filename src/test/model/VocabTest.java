@@ -17,33 +17,33 @@ class VocabTest {
     @Test
     void testConstructor() {
         assertEquals("testVocab", testVocabEntry.getName());
-        assertEquals("Definition: ", testVocabEntry.getDefinition());
-        assertEquals("Original Learning Context for testVocab:", testVocabEntry.getLearningContext());
+        assertEquals("Definition:", testVocabEntry.getDefinition());
+        assertEquals("Original Learning Context:", testVocabEntry.getLearningContext());
     }
 
     @Test
     void testEditName() {
         testVocabEntry.editName("testNewName");
-        assertEquals("testNewName",testVocabEntry.getName());
-        assertEquals("Definition: ", testVocabEntry.getDefinition());
-        assertEquals("Original Learning Context for testNewName:", testVocabEntry.getLearningContext());
+        assertEquals("testNewName", testVocabEntry.getName());
+        assertEquals("Definition:", testVocabEntry.getDefinition());
+        assertEquals("Original Learning Context:", testVocabEntry.getLearningContext());
     }
 
     @Test
     void testEditDefinition() {
         testVocabEntry.editDefinition("definition for testVocab");
-        assertEquals("testVocab",testVocabEntry.getName());
+        assertEquals("testVocab", testVocabEntry.getName());
         assertEquals("Definition: definition for testVocab", testVocabEntry.getDefinition());
-        assertEquals("Original Learning Context for testVocab:", testVocabEntry.getLearningContext());
+        assertEquals("Original Learning Context:", testVocabEntry.getLearningContext());
     }
 
     @Test
     void testEditLearningContext() {
         testVocabEntry.editLearningContext("learning context for testVocab");
-        assertEquals("testVocab",testVocabEntry.getName());
-        assertEquals("Definition: ", testVocabEntry.getDefinition());
-        assertEquals("Original Learning Context for testVocab:"
-                + "\nlearning context for testVocab", testVocabEntry.getLearningContext());
+        assertEquals("testVocab", testVocabEntry.getName());
+        assertEquals("Definition:", testVocabEntry.getDefinition());
+        assertEquals("Original Learning Context: learning context for testVocab",
+                testVocabEntry.getLearningContext());
     }
 
 
