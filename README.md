@@ -4,24 +4,24 @@
 
 
 I am designing a simplified prototype version of a
-vocabulary notebook application for 
-second language learning. This is an application 
+**Vocabulary Notebook application** for 
+Second Language Learning. This is an application 
 I have envisioned for years.
 
 This vocabulary notebook enables its users to store 
 and review their **personalized** vocabulary 
 information while studying a second language.
-Second language learners will be the primary users
+*Second language learners* will be the primary users
 of this application. This app will let users store 
 not only the words and their meanings 
 and translations, but most
 importantly, to store 
 **the original learning context** 
 of the words. Because this is a prototype version,
-the original context will be in text form only at 
+the original context will be in *text form* only at 
 this stage, and in the future, it can take the form 
-of a short video clip, a short voice recording,
-a picture, and etc. So, the three main purposes of
+of *a short video clip, a short voice recording,
+a picture, and etc*. So, the three main purposes of
 this application are:
 
 - let users store vocabulary items
@@ -47,7 +47,7 @@ specific vocabulary items to view information
 attached to them
 - As a user, I want to be able to go into 
 specific vocabulary items to edit and update
-information attached to them
+information attached to them, not implemented in phase 1
 - As a user, I want to be able to delete
 vocabulary items from the vocab list
 
