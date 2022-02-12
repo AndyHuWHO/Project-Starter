@@ -77,7 +77,7 @@ public class VocabApp {
     // EFFECTS: displays edit definition menu options to user
     private void displayAddDefinitionMenu() {
         System.out.println("\nPlease enter the DEFINITION for " + newWord.getName() + ", or:");
-        System.out.println("\tm -> to main without saving the entry");
+        //System.out.println("\tm -> to main without saving the entry");
         System.out.println("\ts) -> to "
                 + "save the entry without contents for definition or learning context and go back to main ");
         System.out.println("\tq -> quit");
@@ -103,7 +103,7 @@ public class VocabApp {
     // EFFECTS: displays edit learning context menu options to user
     private void displayAddLearningContextMenu() {
         System.out.println("\nPlease write down your original LEARNING CONTEXT for " + newWord.getName() + ", or:");
-        System.out.println("\tm -> to main without saving the entry");
+        //System.out.println("\tm -> to main without saving the entry");
         System.out.println("\ts) -> to "
                 + "save the entry with the definition entered but without content for learning context");
         System.out.println("\tq -> quit");
@@ -438,10 +438,11 @@ public class VocabApp {
 
     //EFFECTS: delete a vocab from the list
     private void deleteVocab(String word) {
-        for (Vocab v: myVocabList.getVocabList()) {
+        for (Vocab v : myVocabList.getVocabList()) {
             if (v.getName().equals(word)) {
                 myVocabList.getVocabList().remove(v);
                 System.out.println(word + " is deleted from the list");
+                break;
             }
 
         }
@@ -449,10 +450,9 @@ public class VocabApp {
     }
 
 
-
     //EFFECTS: print the names of vocabs in the list
     private void printVocabList() {
-        for (Vocab v: myVocabList.getVocabList()) {
+        for (Vocab v : myVocabList.getVocabList()) {
             System.out.println(v.getName());
         }
     }
@@ -460,7 +460,7 @@ public class VocabApp {
 
     //EFFECTS: print the names of vocabs in the list
     public void viewVocabEntry(String word) {
-        for (Vocab v: myVocabList.getVocabList()) {
+        for (Vocab v : myVocabList.getVocabList()) {
             if (v.getName().equals(word)) {
                 System.out.println("Word: " + v.getName());
                 System.out.println(v.getDefinition());
@@ -474,7 +474,7 @@ public class VocabApp {
 
     //EFFECTS: get a vocab from the list
     public Vocab findVocab(String word) {
-        for (Vocab v: myVocabList.getVocabList()) {
+        for (Vocab v : myVocabList.getVocabList()) {
             if (v.getName().equals(word)) {
                 return v;
             }

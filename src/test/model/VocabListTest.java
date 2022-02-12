@@ -34,4 +34,23 @@ public class VocabListTest {
         assertTrue(testVocabList.containsVocab(vocab2));
     }
 
+    @Test
+    void testIsEmpty() {
+        assertTrue(testVocabList.isEmpty());
+        testVocabList.addVocab(vocab2);
+        assertFalse(testVocabList.isEmpty());
+    }
+
+    @Test
+    void testContainsVocab() {
+        testVocabList.addVocab(vocab1);
+        assertTrue(testVocabList.containsVocab(vocab1));
+        assertFalse(testVocabList.containsVocab(vocab2));
+        testVocabList.addVocab(vocab2);
+        assertTrue(testVocabList.containsVocab(vocab1));
+        assertTrue(testVocabList.containsVocab(vocab2));
+    }
+
+
+
 }

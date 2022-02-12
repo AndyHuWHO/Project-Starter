@@ -2,10 +2,11 @@ package model;
 
 import java.util.ArrayList;
 
+//VocabList is a list of Vocabs, which are vocabulary entries.
 public class VocabList {
     ArrayList<Vocab> vocabList;
 
-    //A list of the Vocab entries
+    //A new empty list of the Vocab entries
     public VocabList() {
         this.vocabList = new ArrayList<>();
     }
