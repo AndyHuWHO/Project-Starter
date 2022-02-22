@@ -2,28 +2,30 @@ package ui;
 
 import model.Vocab;
 import model.VocabList;
-
 import java.util.Scanner;
 
+
+//Vocabulary Notebook Application
 public class VocabApp {
     private Vocab newWord;
     private Vocab wordBeingEdited;
+    private Vocab wordBeingViewed;
     private VocabList myVocabList;
     private Scanner input;       // what's everything scanner can do??
     boolean keepGoing = true;    //why is this needed??
 
 
-    // initialize VocabApp
+    // initialize the Vocab App
     public VocabApp() {
         input = new Scanner(System.in);   //what is system.in??
         input.useDelimiter("\n");    // useDelimiter??
         myVocabList = new VocabList();
-        openNotebook();    //might want to call it mainMenu??
+        mainMenu();    //might want to call it mainMenu??
     }
 
     // MODIFIES: this  //does it modify this??
     // EFFECTS: processes user input at mainMenu
-    private void openNotebook() {
+    private void mainMenu() {
 
         String mainMenuCommand;
 
@@ -147,6 +149,31 @@ public class VocabApp {
         System.out.println("\tq -> quit");
     }
 
+    //EFFECTS: display vocab entry information with user options.
+    private void viewVocabEntryPhase() {
+        String vocabListCommand;
+        displayViewVocabEntryMenu();
+        vocabListCommand = input.next();
+        vocabListCommand = vocabListCommand.toLowerCase();
+
+        if (vocabListCommand.equals("q")) {
+            keepGoing = false;
+        } else {
+            processViewVocabEntryCommand(vocabListCommand);
+        }
+
+    }
+
+
+    // EFFECTS: displays view vocab entry menu options to user
+    private void displayViewVocabEntryMenu() {
+        System.out.println("\tv -> to go back and view your vocab list");
+        System.out.println("\tm -> back to main");
+        System.out.println("\te -> to edit the current word entry");
+        System.out.println("\td -> to delete the current word entry");
+        System.out.println("\tq -> quit");
+    }
+
 
     //REQUIRES: vocabList is not empty
     //EFFECTS: display delete phase options
@@ -238,7 +265,7 @@ public class VocabApp {
     // EFFECTS: displays view edit entry phase menu options to user
     private void displayEditNamePhaseMenu() {
         System.out.println("\nPlease type in the new word NAME for: " + wordBeingEdited.getName());
-        System.out.println("\tenter m 2 times -> back to main");
+        System.out.println("\tm -> back to main");
         System.out.println("\tv -> back to view your vocab list");
         System.out.println("\tq -> quit");
     }
@@ -269,7 +296,7 @@ public class VocabApp {
     // EFFECTS: displays view edit entry phase menu options to user
     private void displayEditDefinitionPhaseMenu() {
         System.out.println("\nPlease type in definition for " + wordBeingEdited.getName() + " to add");
-        System.out.println("\tenter m 3 times -> back to main");  //last step edit is automatically saved
+        System.out.println("\tm -> back to main");  //last step edit is automatically saved
         System.out.println("\tv -> back to view your vocab list");  //last step edit is automatically saved
         System.out.println("\tq -> quit");
     }
@@ -299,7 +326,7 @@ public class VocabApp {
     // EFFECTS: displays view edit entry phase menu options to user
     private void displayEditLearningContextPhaseMenu() {
         System.out.println("\nPlease type in learning context for " + wordBeingEdited.getName() + " to add");
-        System.out.println("\tenter m 3 times -> back to main");  //last step edit is automatically saved
+        System.out.println("\tm -> back to main");  //last step edit is automatically saved
         System.out.println("\tv -> back to view your vocab list");  //last step edit is automatically saved
         System.out.println("\tq -> quit");
     }
@@ -361,8 +388,29 @@ public class VocabApp {
         } else if (command.equals("e")) {
             editWordEntry();
         } else {
-            viewVocabEntry(command);
+            printVocabEntry(command);
+            wordBeingViewed = myVocabList.findVocab(command);
+            viewVocabEntryPhase();
+
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: processes user command at vocab entry viewing phase
+    private void processViewVocabEntryCommand(String command) {
+        if (command.equals("m")) {
+            System.out.println("going back to main menu");
+        } else if (command.equals("v")) {
             viewNotebook();
+        } else if (command.equals("d")) {
+            myVocabList.getVocabList().remove(wordBeingViewed);
+            System.out.println(wordBeingViewed.getName() + " is deleted from your vocab list");
+            viewNotebook();
+        } else if (command.equals("e")) {
+            editEntryName(wordBeingViewed);
+        } else {
+            System.out.println("invalid command");
+            viewVocabEntryPhase();
 
         }
     }
@@ -375,11 +423,17 @@ public class VocabApp {
         } else if (command.equals("v")) {
             viewNotebook();
         } else {
-            deleteVocab(command);
+            if (myVocabList.deleteVocab(command)) {
+                System.out.println(command + " is deleted from the list");
+            } else {
+                System.out.println(command + " is not in the list");
+            }
+            //myVocabList.deleteVocab(command);
             viewNotebook();
 
         }
     }
+
 
     // MODIFIES: this
     // EFFECTS: processes user command at delete vocab phase
@@ -389,7 +443,7 @@ public class VocabApp {
         } else if (command.equals("v")) {
             viewNotebook();
         } else {
-            editEntryName(findVocab(command));
+            editEntryName(myVocabList.findVocab(command));
             viewNotebook();
 
         }
@@ -423,7 +477,6 @@ public class VocabApp {
             System.out.println("definition had been edited");
             editEntryLearningContext();
 
-
         }
     }
 
@@ -443,39 +496,23 @@ public class VocabApp {
     }
 
 
-    //EFFECTS: delete a vocab from the list
-    private void deleteVocab(String word) {
-        if (findVocab(word) == null) {
-            System.out.println(word + " is not in the list");
-        }
-
-        for (Vocab v : myVocabList.getVocabList()) {
-            if (v.getName().equals(word)) {
-                myVocabList.getVocabList().remove(v);
-                System.out.println(word + " is deleted from the list");
-                break;
-            }
-        }
-
-
-    }
-
 
     //EFFECTS: print the names of vocabs in the list
     private void printVocabList() {
-        for (Vocab v : myVocabList.getVocabList()) {
-            System.out.println(v.getName());
-        }
+        System.out.println("Below is your vocab list: ");
+        System.out.println(myVocabList.toString());
+
     }
 
 
     //EFFECTS: print the names of vocabs in the list
-    public void viewVocabEntry(String word) {
+    public void printVocabEntry(String word) {
         for (Vocab v : myVocabList.getVocabList()) {
             if (v.getName().equals(word)) {
                 System.out.println("Word: " + v.getName());
                 System.out.println(v.getDefinition());
                 System.out.println(v.getLearningContext());
+                //viewVocabEntryPhase();
                 return;
             }
 
@@ -483,17 +520,8 @@ public class VocabApp {
         System.out.println(word + " is not in the list");
     }
 
-    //EFFECTS: get a vocab from the list
-    public Vocab findVocab(String word) {
-        for (Vocab v : myVocabList.getVocabList()) {
-            if (v.getName().equals(word)) {
-                return v;
-            }
-        }
-        return null;
-    }
+
 
 }
-
 
 

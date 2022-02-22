@@ -18,7 +18,6 @@ public class Vocab {
     //EFFECTS:edit the name of the vocab entry
     public void editName(String newName) {
         this.name = newName;
-
     }
 
     //MODIFIES: this
@@ -33,20 +32,17 @@ public class Vocab {
         this.learningContext = this.learningContext + " " + newLearningContext;
     }
 
-
-
-
-    // EFFECTS: returns name
+    // EFFECTS: returns vocab name
     public String getName() {
         return name;
     }
 
-    // EFFECTS: returns definition
+    // EFFECTS: returns vocab definition
     public String getDefinition() {
         return definition;
     }
 
-    // EFFECTS: returns learningContext
+    // EFFECTS: returns vocab learningContext
     public String getLearningContext() {
         return learningContext;
     }
