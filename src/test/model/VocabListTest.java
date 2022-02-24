@@ -18,10 +18,12 @@ public class VocabListTest {
         vocab2 = new Vocab("two");
     }
 
+
     @Test
     void testVocabListConstructor() {
         assertEquals(0, testVocabList.getSize());
     }
+
 
     @Test
     void testAddVocab() {
@@ -34,12 +36,21 @@ public class VocabListTest {
         assertTrue(testVocabList.containsVocab(vocab2));
     }
 
+
     @Test
-    void testIsEmpty() {
-        assertTrue(testVocabList.isEmpty());
+    void testDeleteVocabByName() {
+        assertFalse(testVocabList.deleteVocabByName("one"));
+        testVocabList.addVocab(vocab1);
         testVocabList.addVocab(vocab2);
-        assertFalse(testVocabList.isEmpty());
+        assertFalse(testVocabList.deleteVocabByName("three"));
+        assertTrue(testVocabList.deleteVocabByName("one"));
+        assertEquals(1,testVocabList.getSize());
+        assertFalse(testVocabList.containsVocab(vocab1));
+        assertFalse(testVocabList.deleteVocabByName("one"));
+        assertTrue(testVocabList.deleteVocabByName("two"));
+        assertTrue(testVocabList.isEmpty());
     }
+
 
     @Test
     void testFindVocab() {
@@ -51,13 +62,25 @@ public class VocabListTest {
         assertNull(testVocabList.findVocab("three"));
     }
 
+
     @Test
-    void testToString() {
-        assertEquals("",testVocabList.toString());
-        testVocabList.addVocab(vocab1);
+    void testGetVocabList() {
+        assertEquals(0,testVocabList.getVocabList().size());
         testVocabList.addVocab(vocab2);
-        assertEquals("1. one\n2. two\n",testVocabList.toString());
+        testVocabList.addVocab(vocab1);
+        assertEquals(2,testVocabList.getVocabList().size());
+        assertTrue(testVocabList.getVocabList().remove(vocab1));
+        assertEquals(1,testVocabList.getVocabList().size());
     }
+
+
+    @Test
+    void testIsEmpty() {
+        assertTrue(testVocabList.isEmpty());
+        testVocabList.addVocab(vocab2);
+        assertFalse(testVocabList.isEmpty());
+    }
+
 
     @Test
     void testContainsVocab() {
@@ -69,20 +92,14 @@ public class VocabListTest {
         assertTrue(testVocabList.containsVocab(vocab2));
     }
 
+
     @Test
-    void  testDeleteVocab() {
-        assertFalse(testVocabList.deleteVocab("one"));
+    void testToString() {
+        assertEquals("",testVocabList.toListVocabs());
         testVocabList.addVocab(vocab1);
         testVocabList.addVocab(vocab2);
-        assertFalse(testVocabList.deleteVocab("three"));
-        assertTrue(testVocabList.deleteVocab("one"));
-        assertEquals(1,testVocabList.getSize());
-        assertFalse(testVocabList.deleteVocab("one"));
-        assertTrue(testVocabList.deleteVocab("two"));
-        assertTrue(testVocabList.isEmpty());
-
+        assertEquals("1. one\n2. two\n",testVocabList.toListVocabs());
     }
-
 
 
 }

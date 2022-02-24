@@ -1,6 +1,7 @@
 package model;
 
-// Vocab is a vocabulary entry, with its name, definition, and original learning context
+// Vocab is a vocabulary entry, with its name, its index number in the vocabList + 1,
+// its definition, and its original learning context
 public class Vocab {
     private String name;
     private String definition;
@@ -15,19 +16,20 @@ public class Vocab {
 
 
     //MODIFIES: this
-    //EFFECTS:edit the name of the vocab entry
+    //EFFECTS:set the name of the vocab entry as newName
     public void editName(String newName) {
         this.name = newName;
     }
 
+
     //MODIFIES: this
-    //EFFECTS:edit the definition of the vocab entry
+    //EFFECTS:add newDefinition content to the definition of the vocab entry
     public void editDefinition(String newDefinition) {
         this.definition = this.definition + " " + newDefinition;
     }
 
     //MODIFIES: this
-    //EFFECTS:edit the original learning context of the vocab entry
+    //EFFECTS:add newLearningContext content to the learningContext of the vocab entry
     public void editLearningContext(String newLearningContext) {
         this.learningContext = this.learningContext + " " + newLearningContext;
     }
@@ -45,6 +47,16 @@ public class Vocab {
     // EFFECTS: returns vocab learningContext
     public String getLearningContext() {
         return learningContext;
+    }
+
+
+    //EFFECTS: print the names of vocabs in the list
+    public String makeVocabCard() {
+        return "************************"
+                + "\nWord: " + name
+                + "\n" + definition
+                + "\n" + learningContext
+                + "\n*************************";
     }
 
 }

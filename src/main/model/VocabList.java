@@ -22,7 +22,7 @@ public class VocabList {
     //MODIFIES: this
     //EFFECTS: remove a vocab of the given name from the vocab list if the vocab is in the list and return true
     //         if there is no vocab of the given name in the list, return false
-    public boolean deleteVocab(String word) {
+    public boolean deleteVocabByName(String word) {
         for (Vocab v : vocabList) {
             if (v.getName().equals(word)) {
                 vocabList.remove(v);
@@ -30,7 +30,6 @@ public class VocabList {
             }
         }
         return false;
-
     }
 
 
@@ -66,12 +65,12 @@ public class VocabList {
     }
 
     //EFFECTS: to make a list of the vocab names in the vocab list
-    public String toString() {
-        String result = "";
+    public String toListVocabs() {
+        String result = "Below is your vocab list:";
         for (Vocab v: vocabList) {
-            result = result + (vocabList.indexOf(v) + 1) + ". " + v.getName() + "\n";
+            result = result + "\n" + (vocabList.indexOf(v) + 1) + ". " + v.getName();
         }
-        return result;
+        return "****************************\n" + result + "\n****************************";
     }
 
 
