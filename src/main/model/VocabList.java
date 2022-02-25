@@ -2,28 +2,28 @@ package model;
 
 import java.util.ArrayList;
 
-//VocabList is a list of Vocabs
+//VocabList is a list of Words
 public class VocabList {
-    ArrayList<Vocab> vocabList;
+    ArrayList<Word> vocabList;
 
-    //A new empty list of the Vocab entries
+    //A new empty list of the word entries
     public VocabList() {
         this.vocabList = new ArrayList<>();
     }
 
 
     //MODIFIES: this
-    //EFFECTS: add new Vocab Entry into VocabList
-    public void addVocab(Vocab name) {
+    //EFFECTS: add a new word entry into VocabList
+    public void addWord(Word name) {
         vocabList.add(name);
     }
 
 
     //MODIFIES: this
-    //EFFECTS: remove a vocab of the given name from the vocab list if the vocab is in the list and return true
-    //         if there is no vocab of the given name in the list, return false
-    public boolean deleteVocabByName(String word) {
-        for (Vocab v : vocabList) {
+    //EFFECTS: remove a word of the given name from the vocab list if the word is in the list and return true
+    //         if there is no word of the given name in the list, return false
+    public boolean deleteWordByName(String word) {
+        for (Word v : vocabList) {
             if (v.getName().equals(word)) {
                 vocabList.remove(v);
                 return true;
@@ -33,9 +33,9 @@ public class VocabList {
     }
 
 
-    //EFFECTS: get a vocab from the list
-    public Vocab findVocab(String word) {
-        for (Vocab v : vocabList) {
+    //EFFECTS: get a word of the given name from the vocab list
+    public Word findWord(String word) {
+        for (Word v : vocabList) {
             if (v.getName().equals(word)) {
                 return v;
             }
@@ -45,7 +45,7 @@ public class VocabList {
 
 
     //EFFECTS: returns the vocabList which is ArrayList<Vocab>
-    public ArrayList<Vocab> getVocabList() {
+    public ArrayList<Word> getVocabList() {
         return vocabList;
     }
 
@@ -60,14 +60,14 @@ public class VocabList {
     }
 
     // EFFECTS: to check if a specific vocab is in the vocab list, return true if yes and false otherwise
-    public boolean containsVocab(Vocab v) {
+    public boolean containsWord(Word v) {
         return vocabList.contains(v);
     }
 
-    //EFFECTS: to make a list of the vocab names in the vocab list
-    public String toListVocabs() {
+    //EFFECTS: to make a list of the words' names in the vocab list
+    public String toListVocabulary() {
         String result = "Below is your vocab list:";
-        for (Vocab v: vocabList) {
+        for (Word v: vocabList) {
             result = result + "\n" + (vocabList.indexOf(v) + 1) + ". " + v.getName();
         }
         return "****************************\n" + result + "\n****************************";

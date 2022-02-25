@@ -1,14 +1,13 @@
 package model;
 
-// Vocab is a vocabulary entry, with its name, its index number in the vocabList + 1,
-// its definition, and its original learning context
-public class Vocab {
+// Word is a second language word entry, with its name, definition, and its original learning context
+public class Word {
     private String name;
     private String definition;
     private String learningContext;
 
-    //EFFECTS: Vocab has the name of the word, a definition, and it's learning context
-    public Vocab(String word) {
+    //EFFECTS: Word has the name of the word, a definition, and its original learning context
+    public Word(String word) {
         this.name = word;
         this.definition = "Definition:";
         this.learningContext = "Original Learning Context:";
@@ -16,42 +15,42 @@ public class Vocab {
 
 
     //MODIFIES: this
-    //EFFECTS:set the name of the vocab entry as newName
+    //EFFECTS:set the name of the word entry
     public void editName(String newName) {
         this.name = newName;
     }
 
 
     //MODIFIES: this
-    //EFFECTS:add newDefinition content to the definition of the vocab entry
+    //EFFECTS:add newDefinition content to the definition of the word entry
     public void editDefinition(String newDefinition) {
         this.definition = this.definition + " " + newDefinition;
     }
 
     //MODIFIES: this
-    //EFFECTS:add newLearningContext content to the learningContext of the vocab entry
+    //EFFECTS:add newLearningContext content to the learningContext of the word entry
     public void editLearningContext(String newLearningContext) {
         this.learningContext = this.learningContext + " " + newLearningContext;
     }
 
-    // EFFECTS: returns vocab name
+    // EFFECTS: returns word name
     public String getName() {
         return name;
     }
 
-    // EFFECTS: returns vocab definition
+    // EFFECTS: returns word definition
     public String getDefinition() {
         return definition;
     }
 
-    // EFFECTS: returns vocab learningContext
+    // EFFECTS: returns word learningContext
     public String getLearningContext() {
         return learningContext;
     }
 
 
-    //EFFECTS: print the names of vocabs in the list
-    public String makeVocabCard() {
+    //EFFECTS: to string the word entry name, definition, and learning context together to make a word card
+    public String makeWordCard() {
         return "************************"
                 + "\nWord: " + name
                 + "\n" + definition
