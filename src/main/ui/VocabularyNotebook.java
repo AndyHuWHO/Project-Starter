@@ -49,8 +49,8 @@ public class VocabularyNotebook {
 
     // EFFECTS: displays main menu options to user
     private void displayMainMenu() {
-        System.out.println("\nEnter your WORD to create a new word entry, or:");
-        System.out.println("\tv -> to view your vocabulary list");
+        System.out.println("\nEnter a new WORD to create a new word entry, or:");
+        System.out.println("\tv -> to view your Vocabulary List");
         System.out.println("\tq -> quit");
     }
 
@@ -75,8 +75,8 @@ public class VocabularyNotebook {
 
     // EFFECTS: displays add definition menu options to user
     private void displayAddDefinitionMenu() {
-        System.out.println("\nPlease enter the DEFINITION for " + newWord.getName() + ", or:");
-        System.out.println("\tm -> to main WITHOUT saving the word entry");  //why was this line commented out earlier??
+        System.out.println("\nPlease enter the DEFINITION for [" + newWord.getName() + "], or:");
+        System.out.println("\tm -> to main WITHOUT saving the word entry");
         System.out.println("\ts) -> to "
                 + "SAVE the word entry without content for definition or learning context");
         System.out.println("\tq -> quit");
@@ -101,8 +101,8 @@ public class VocabularyNotebook {
 
     // EFFECTS: displays edit learning context menu options to user
     private void displayAddLearningContextMenu() {
-        System.out.println("\nPlease write down your original LEARNING CONTEXT for " + newWord.getName() + ", or:");
-        System.out.println("\tm -> to main WITHOUT saving the word entry");  //why was this line commented out?
+        System.out.println("\nPlease write down your original LEARNING CONTEXT for [" + newWord.getName() + "], or:");
+        System.out.println("\tm -> to main WITHOUT saving the word entry");
         System.out.println("\ts) -> to "
                 + "Save the word entry without content for learning context");
         System.out.println("\tq -> quit");
@@ -112,7 +112,7 @@ public class VocabularyNotebook {
     //EFFECTS: display word names in the vocab list with user options.
     private void viewVocabList() {
         if (myVocabList.isEmpty()) {
-            System.out.println("\nThere's no words in your list yet");
+            System.out.println("\nThere's no words in your Vocabulary List yet");
         } else {
             String vocabListCommand;
 
@@ -136,8 +136,8 @@ public class VocabularyNotebook {
     private void displayVocabListMenu() {
         System.out.println("\nPlease type in the word you want to REVIEW, or");
         System.out.println("\tm -> back to main");
-        System.out.println("\te -> to edit a word entry");
-        System.out.println("\td -> to delete a word entry");
+        System.out.println("\te -> to EDIT a word entry");
+        System.out.println("\td -> to DELETE a word entry");
         System.out.println("\tq -> quit");
     }
 
@@ -169,10 +169,10 @@ public class VocabularyNotebook {
 
     // EFFECTS: displays view word entry menu options to user
     private void displayViewWordEntryMenu() {
-        System.out.println("\tv -> to go back and view your vocabulary list");
+        System.out.println("\tv -> to go back and view your Vocabulary List");
         System.out.println("\tm -> back to main");
-        System.out.println("\te -> to edit the current word entry");
-        System.out.println("\td -> to delete the current word entry");
+        System.out.println("\te -> to EDIT the current word entry");
+        System.out.println("\td -> to DELETE the current word entry");
         System.out.println("\tq -> quit");
     }
 
@@ -201,7 +201,7 @@ public class VocabularyNotebook {
     private void displayDeletePhaseMenu() {
         System.out.println("\nPlease type in the word you want to DELETE, or");
         System.out.println("\tm -> back to main");
-        System.out.println("\tv -> back to view your vocabulary list");
+        System.out.println("\tv -> back to view your Vocabulary List");
         System.out.println("\tq -> quit");
     }
 
@@ -231,7 +231,7 @@ public class VocabularyNotebook {
     private void displayEditPhaseMenu() {
         System.out.println("\nPlease type in the word you want to EDIT, or");
         System.out.println("\tm -> back to main");
-        System.out.println("\tv -> back to view your vocabulary list");
+        System.out.println("\tv -> back to view your Vocabulary List");
         System.out.println("\tq -> quit");
     }
 
@@ -268,7 +268,7 @@ public class VocabularyNotebook {
     // EFFECTS: displays view edit entry phase menu options to user
     private void displayEditNamePhaseMenu() {
         System.out.println("\nPlease type in the new word NAME for [" + wordBeingEdited.getName() + "], or");
-        System.out.println("\tv -> cancel and go back to view your vocabulary list");
+        System.out.println("\tv -> cancel and go back to view your Vocabulary List");
         System.out.println("\tq -> quit");
     }
 
@@ -294,7 +294,7 @@ public class VocabularyNotebook {
     // EFFECTS: displays view edit entry phase menu options to user
     private void displayEditDefinitionPhaseMenu() {
         System.out.println("\nPlease add definition for [" + wordBeingEdited.getName() + "], or");
-        System.out.println("\tv -> back to view your vocabulary list");  //last step edit is automatically saved
+        System.out.println("\tv -> back to view your Vocabulary List");  //last step edit is automatically saved
         System.out.println("\tq -> quit");
     }
 
@@ -320,7 +320,7 @@ public class VocabularyNotebook {
     // EFFECTS: displays view edit entry phase menu options to user
     private void displayEditLearningContextPhaseMenu() {
         System.out.println("\nPlease add learning context for [" + wordBeingEdited.getName() + "], or");
-        System.out.println("\tv -> back to view your vocabulary list");  //last step edit is automatically saved
+        System.out.println("\tv -> back to view your Vocabulary List");  //last step edit is automatically saved
         System.out.println("\tq -> quit");
     }
 
@@ -396,7 +396,7 @@ public class VocabularyNotebook {
             viewVocabList();   //needed?
         } else if (command.equals("d")) {
             myVocabList.getVocabList().remove(wordBeingViewed);
-            System.out.println(wordBeingViewed.getName() + " is deleted from your vocabulary list");
+            System.out.println(wordBeingViewed.getName() + " is deleted from your Vocabulary List");
             viewVocabList();  //needed?
         } else if (command.equals("e")) {
             editEntryName(wordBeingViewed);

@@ -50,9 +50,9 @@ specific vocabulary items to edit and update
 information attached to them
 - As a user, I want to be able to delete
 vocabulary items from the vocab list
-- As a user, I want to be able to save my vocab list
-automatically to file before terminating the app
+- As a user, I want to be able to save my vocab list to file 
+before terminating the app
 - As a user,  I want to be able to be able to load 
-my vocab list from file automatically when I start the app
+my vocab list from file when I start the app
 
 
