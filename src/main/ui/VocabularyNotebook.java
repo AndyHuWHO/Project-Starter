@@ -2,17 +2,25 @@ package ui;
 
 import model.Word;
 import model.VocabList;
+import persistence.JsonReader;
+import persistence.JsonWriter;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 
 //Vocabulary Notebook Application for second language learner
 public class VocabularyNotebook {
+    private static final String JSON_STORE = "./data/vocabList.json";
     private Word newWord;
     private Word wordBeingEdited;
     private Word wordBeingViewed;
     private VocabList myVocabList;
     private Scanner input;
     boolean keepGoing = true;    //why is this needed??
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
 
     // initialize the VocabularyNotebook Application with an empty VocabList and run the mainMenu
@@ -20,9 +28,10 @@ public class VocabularyNotebook {
         input = new Scanner(System.in);
         input.useDelimiter("\n");
         myVocabList = new VocabList();
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         mainMenu();
     }
-
 
 
     // MODIFIES: this  //does it modify this??
@@ -42,10 +51,8 @@ public class VocabularyNotebook {
                 processMainMenuCommand(mainMenuCommand);
             }
         }
-
         System.out.println("\nGoodbye!");
     }
-
 
     // EFFECTS: displays main menu options to user
     private void displayMainMenu() {
@@ -53,6 +60,19 @@ public class VocabularyNotebook {
         System.out.println("\tv -> to view your Vocabulary List");
         System.out.println("\tq -> quit");
     }
+
+    // MODIFIES: this
+    // EFFECTS: processes user command at main menu
+    private void processMainMenuCommand(String command) {
+        if (command.equals("v")) {
+            viewVocabList();
+        } else {
+            buildNewWord(command);
+        }
+    }
+
+
+
 
 
     // EFFECTS: start building a new word entry with given name by
@@ -70,7 +90,6 @@ public class VocabularyNotebook {
         } else {
             processDefinitionPhaseCommand(definitionPhaseCommand);
         }
-
     }
 
     // EFFECTS: displays add definition menu options to user
@@ -81,6 +100,24 @@ public class VocabularyNotebook {
                 + "SAVE the word entry without content for definition or learning context");
         System.out.println("\tq -> quit");
     }
+
+    // MODIFIES: this
+    // EFFECTS: processes user command at definition phase
+    private void processDefinitionPhaseCommand(String command) {
+        if (command.equals("m")) {
+            System.out.println("going back to main menu, word NOT saved");
+        } else if (command.equals("s")) {
+            myVocabList.addWord(newWord);
+            System.out.println(newWord.getName() + " is SAVED in your notebook "
+                    + "with no definition or original learning context");
+        } else {
+            newWord.editDefinition(command);
+            learningContextPhase();
+        }
+    }
+
+
+
 
 
     //EFFECTS: ask user to put in the learning context for the word or do other commands
@@ -98,7 +135,6 @@ public class VocabularyNotebook {
         }
     }
 
-
     // EFFECTS: displays edit learning context menu options to user
     private void displayAddLearningContextMenu() {
         System.out.println("\nPlease write down your original LEARNING CONTEXT for [" + newWord.getName() + "], or:");
@@ -107,6 +143,26 @@ public class VocabularyNotebook {
                 + "Save the word entry without content for learning context");
         System.out.println("\tq -> quit");
     }
+
+    // MODIFIES: this
+    // EFFECTS: processes user command at learning context phase
+    private void processLearningContextPhaseCommand(String command) {
+        if (command.equals("m")) {
+            System.out.println("going back to main menu, word NOT saved");
+        } else if (command.equals("s")) {
+            myVocabList.addWord(newWord);
+            System.out.println(newWord.getName() + " is SAVED in your notebook "
+                    + "without original learning context");
+        } else {
+            newWord.editLearningContext(command);
+            myVocabList.addWord(newWord);
+            System.out.println(newWord.getName() + " is SAVED with definition and original learning context");
+        }
+    }
+
+
+
+
 
 
     //EFFECTS: display word names in the vocab list with user options.
@@ -127,10 +183,8 @@ public class VocabularyNotebook {
             } else {
                 processVocabListCommand(vocabListCommand);
             }
-
         }
     }
-
 
     // EFFECTS: displays view vocabularyList menu options to user
     private void displayVocabListMenu() {
@@ -141,13 +195,30 @@ public class VocabularyNotebook {
         System.out.println("\tq -> quit");
     }
 
+    // MODIFIES: this
+    // EFFECTS: processes user command at vocabList viewing phase
+    private void processVocabListCommand(String command) {
+        if (command.equals("m")) {
+            System.out.println("going back to main menu");
+        } else if (command.equals("d")) {
+            deleteOneWord();    //might not want this
+        } else if (command.equals("e")) {
+            editWordEntry();
+        } else {
+            wordBeingViewed = myVocabList.findWord(command);
+            viewWordEntry(command);
+        }
+    }
+
+
+
+
     //EFFECTS: display word entry information with user options.
     private void viewWordEntry(String wordName) {
         if (wordBeingViewed == null) {
             System.out.println(wordName + " is not in the list");
             viewVocabList();
         } else {
-
             String vocabListCommand;
 
             System.out.println(wordBeingViewed.makeWordCard());
@@ -156,16 +227,13 @@ public class VocabularyNotebook {
             vocabListCommand = input.next();
             vocabListCommand = vocabListCommand.toLowerCase();
 
-
             if (vocabListCommand.equals("q")) {
                 keepGoing = false;
             } else {
                 processViewWordEntryCommand(vocabListCommand);
             }
         }
-
     }
-
 
     // EFFECTS: displays view word entry menu options to user
     private void displayViewWordEntryMenu() {
@@ -175,6 +243,26 @@ public class VocabularyNotebook {
         System.out.println("\td -> to DELETE the current word entry");
         System.out.println("\tq -> quit");
     }
+
+    // MODIFIES: this
+    // EFFECTS: processes user command at word entry viewing phase
+    private void processViewWordEntryCommand(String command) {
+        if (command.equals("m")) {
+            System.out.println("going back to main menu");
+        } else if (command.equals("v")) {
+            viewVocabList();   //needed?
+        } else if (command.equals("d")) {
+            myVocabList.getVocabList().remove(wordBeingViewed);
+            System.out.println(wordBeingViewed.getName() + " is deleted from your Vocabulary List");
+            viewVocabList();  //needed?
+        } else if (command.equals("e")) {
+            editEntryName(wordBeingViewed);
+        } else {
+            System.out.println("invalid command");
+        }
+    }
+
+
 
 
     //REQUIRES: vocabList is not empty
@@ -193,9 +281,7 @@ public class VocabularyNotebook {
         } else {
             processDeletePhaseCommand(deletePhaseCommand);
         }
-
     }
-
 
     // EFFECTS: displays view delete phase menu options to user
     private void displayDeletePhaseMenu() {
@@ -203,207 +289,6 @@ public class VocabularyNotebook {
         System.out.println("\tm -> back to main");
         System.out.println("\tv -> back to view your Vocabulary List");
         System.out.println("\tq -> quit");
-    }
-
-
-    //REQUIRES: vocabList is not empty
-    //EFFECTS: display edit phase options
-    private void editWordEntry() {
-        String editPhaseCommand;
-
-        System.out.println(myVocabList.toListVocabulary());
-        displayEditPhaseMenu();
-
-        editPhaseCommand = input.next();
-        editPhaseCommand = editPhaseCommand.trim();
-
-
-        if (editPhaseCommand.equals("q")) {
-            keepGoing = false;
-        } else {
-            processEditPhaseCommand(editPhaseCommand);
-        }
-
-    }
-
-
-    // EFFECTS: displays view edit entry phase menu options to user
-    private void displayEditPhaseMenu() {
-        System.out.println("\nPlease type in the word you want to EDIT, or");
-        System.out.println("\tm -> back to main");
-        System.out.println("\tv -> back to view your Vocabulary List");
-        System.out.println("\tq -> quit");
-    }
-
-
-    //REQUIRES: vocabList is not empty
-    //EFFECTS: display edit name phase options
-    private void editEntryName(Word word) {
-        wordBeingEdited = word;
-
-
-        if (wordBeingEdited == null) {
-            System.out.println("It's not in the list");
-            viewVocabList();
-
-        } else {
-            String editNamePhaseCommand;
-
-            displayEditNamePhaseMenu();
-
-            editNamePhaseCommand = input.next();
-            editNamePhaseCommand = editNamePhaseCommand.trim();
-
-
-            if (editNamePhaseCommand.equals("q")) {
-                keepGoing = false;
-            } else {
-                processEditNamePhaseCommand(editNamePhaseCommand);
-            }
-        }
-
-    }
-
-
-    // EFFECTS: displays view edit entry phase menu options to user
-    private void displayEditNamePhaseMenu() {
-        System.out.println("\nPlease type in the new word NAME for [" + wordBeingEdited.getName() + "], or");
-        System.out.println("\tv -> cancel and go back to view your Vocabulary List");
-        System.out.println("\tq -> quit");
-    }
-
-
-    //REQUIRES: vocabList is not empty
-    //EFFECTS: display edit name phase options
-    private void editEntryDefinition() {
-        String editDefinitionPhaseCommand;
-
-        displayEditDefinitionPhaseMenu();
-
-        editDefinitionPhaseCommand = input.next();
-
-        if (editDefinitionPhaseCommand.equals("q")) {
-            keepGoing = false;
-        } else {
-            processEditDefinitionPhaseCommand(editDefinitionPhaseCommand);
-        }
-
-    }
-
-
-    // EFFECTS: displays view edit entry phase menu options to user
-    private void displayEditDefinitionPhaseMenu() {
-        System.out.println("\nPlease add definition for [" + wordBeingEdited.getName() + "], or");
-        System.out.println("\tv -> back to view your Vocabulary List");  //last step edit is automatically saved
-        System.out.println("\tq -> quit");
-    }
-
-
-    //REQUIRES: vocabList is not empty
-    //EFFECTS: display edit name phase options
-    private void editEntryLearningContext() {
-        String editLearningContextPhaseCommand;
-
-        displayEditLearningContextPhaseMenu();
-
-        editLearningContextPhaseCommand = input.next();
-
-        if (editLearningContextPhaseCommand.equals("q")) {
-            keepGoing = false;
-        } else {
-            processEditLearningContextPhaseCommand(editLearningContextPhaseCommand);
-        }
-
-    }
-
-
-    // EFFECTS: displays view edit entry phase menu options to user
-    private void displayEditLearningContextPhaseMenu() {
-        System.out.println("\nPlease add learning context for [" + wordBeingEdited.getName() + "], or");
-        System.out.println("\tv -> back to view your Vocabulary List");  //last step edit is automatically saved
-        System.out.println("\tq -> quit");
-    }
-
-
-    // MODIFIES: this
-    // EFFECTS: processes user command at main menu
-    private void processMainMenuCommand(String command) {
-        if (command.equals("v")) {
-            viewVocabList();
-        } else {
-            buildNewWord(command);
-        }
-    }
-
-
-    // MODIFIES: this
-    // EFFECTS: processes user command at definition phase
-    private void processDefinitionPhaseCommand(String command) {
-        if (command.equals("m")) {
-            System.out.println("going back to main menu, word NOT saved");
-        } else if (command.equals("s")) {
-            myVocabList.addWord(newWord);
-            System.out.println(newWord.getName() + " is SAVED in your notebook "
-                    + "with no definition or original learning context");
-        } else {
-            newWord.editDefinition(command);
-            learningContextPhase();
-
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: processes user command at learning context phase
-    private void processLearningContextPhaseCommand(String command) {
-        if (command.equals("m")) {
-            System.out.println("going back to main menu, word NOT saved");
-        } else if (command.equals("s")) {
-            myVocabList.addWord(newWord);
-            System.out.println(newWord.getName() + " is SAVED in your notebook "
-                    + "without original learning context");
-        } else {
-            newWord.editLearningContext(command);
-            myVocabList.addWord(newWord);
-            System.out.println(newWord.getName() + " is SAVED with definition and original learning context");
-
-        }
-    }
-
-
-
-    // MODIFIES: this
-    // EFFECTS: processes user command at vocabList viewing phase
-    private void processVocabListCommand(String command) {
-        if (command.equals("m")) {
-            System.out.println("going back to main menu");
-        } else if (command.equals("d")) {
-            deleteOneWord();    //might not want this
-        } else if (command.equals("e")) {
-            editWordEntry();
-        } else {
-            wordBeingViewed = myVocabList.findWord(command);
-            viewWordEntry(command);
-
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: processes user command at word entry viewing phase
-    private void processViewWordEntryCommand(String command) {
-        if (command.equals("m")) {
-            System.out.println("going back to main menu");
-        } else if (command.equals("v")) {
-            viewVocabList();   //needed?
-        } else if (command.equals("d")) {
-            myVocabList.getVocabList().remove(wordBeingViewed);
-            System.out.println(wordBeingViewed.getName() + " is deleted from your Vocabulary List");
-            viewVocabList();  //needed?
-        } else if (command.equals("e")) {
-            editEntryName(wordBeingViewed);
-        } else {
-            System.out.println("invalid command");
-
-        }
     }
 
     // MODIFIES: this
@@ -420,10 +305,37 @@ public class VocabularyNotebook {
                 System.out.println(command + " is not in the list");
             }
             viewVocabList();
-
         }
     }
 
+
+
+
+    //REQUIRES: vocabList is not empty
+    //EFFECTS: display edit phase options
+    private void editWordEntry() {
+        String editPhaseCommand;
+
+        System.out.println(myVocabList.toListVocabulary());
+        displayEditPhaseMenu();
+
+        editPhaseCommand = input.next();
+        editPhaseCommand = editPhaseCommand.trim();
+
+        if (editPhaseCommand.equals("q")) {
+            keepGoing = false;
+        } else {
+            processEditPhaseCommand(editPhaseCommand);
+        }
+    }
+
+    // EFFECTS: displays view edit entry phase menu options to user
+    private void displayEditPhaseMenu() {
+        System.out.println("\nPlease type in the word you want to EDIT, or");
+        System.out.println("\tm -> back to main");
+        System.out.println("\tv -> back to view your Vocabulary List");
+        System.out.println("\tq -> quit");
+    }
 
     // MODIFIES: this
     // EFFECTS: processes user command at edit word phase
@@ -434,10 +346,45 @@ public class VocabularyNotebook {
             viewVocabList();
         } else {
             editEntryName(myVocabList.findWord(command));
-
         }
     }
 
+
+
+
+
+
+    //REQUIRES: vocabList is not empty
+    //EFFECTS: display edit name phase options
+    private void editEntryName(Word word) {
+        wordBeingEdited = word;
+
+        if (wordBeingEdited == null) {
+            System.out.println("It's not in the list");
+            viewVocabList();
+        } else {
+            String editNamePhaseCommand;
+
+            displayEditNamePhaseMenu();
+
+            editNamePhaseCommand = input.next();
+            editNamePhaseCommand = editNamePhaseCommand.trim();
+
+            if (editNamePhaseCommand.equals("q")) {
+                keepGoing = false;
+            } else {
+                processEditNamePhaseCommand(editNamePhaseCommand);
+            }
+        }
+
+    }
+
+    // EFFECTS: displays view edit entry phase menu options to user
+    private void displayEditNamePhaseMenu() {
+        System.out.println("\nPlease type in the new word NAME for [" + wordBeingEdited.getName() + "], or");
+        System.out.println("\tv -> cancel and go back to view your Vocabulary List");
+        System.out.println("\tq -> quit");
+    }
 
     // MODIFIES: this
     // EFFECTS: processes user command at edit word name phase
@@ -452,6 +399,32 @@ public class VocabularyNotebook {
     }
 
 
+
+
+
+    //REQUIRES: vocabList is not empty
+    //EFFECTS: display edit name phase options
+    private void editEntryDefinition() {
+        String editDefinitionPhaseCommand;
+
+        displayEditDefinitionPhaseMenu();
+
+        editDefinitionPhaseCommand = input.next();
+
+        if (editDefinitionPhaseCommand.equals("q")) {
+            keepGoing = false;
+        } else {
+            processEditDefinitionPhaseCommand(editDefinitionPhaseCommand);
+        }
+    }
+
+    // EFFECTS: displays view edit entry phase menu options to user
+    private void displayEditDefinitionPhaseMenu() {
+        System.out.println("\nPlease add definition for [" + wordBeingEdited.getName() + "], or");
+        System.out.println("\tv -> back to view your Vocabulary List");  //last step edit is automatically saved
+        System.out.println("\tq -> quit");
+    }
+
     // MODIFIES: this
     // EFFECTS: processes user command at edit definition phase
     private void processEditDefinitionPhaseCommand(String command) {
@@ -464,6 +437,32 @@ public class VocabularyNotebook {
         }
     }
 
+
+
+
+    //REQUIRES: vocabList is not empty
+    //EFFECTS: display edit name phase options
+    private void editEntryLearningContext() {
+        String editLearningContextPhaseCommand;
+
+        displayEditLearningContextPhaseMenu();
+
+        editLearningContextPhaseCommand = input.next();
+
+        if (editLearningContextPhaseCommand.equals("q")) {
+            keepGoing = false;
+        } else {
+            processEditLearningContextPhaseCommand(editLearningContextPhaseCommand);
+        }
+    }
+
+    // EFFECTS: displays view edit entry phase menu options to user
+    private void displayEditLearningContextPhaseMenu() {
+        System.out.println("\nPlease add learning context for [" + wordBeingEdited.getName() + "], or");
+        System.out.println("\tv -> back to view your Vocabulary List");  //last step edit is automatically saved
+        System.out.println("\tq -> quit");
+    }
+
     // MODIFIES: this
     // EFFECTS: processes user command at edit learning context phase
     private void processEditLearningContextPhaseCommand(String command) {
@@ -472,6 +471,30 @@ public class VocabularyNotebook {
             System.out.println("Learning context had been updated");
         }
         viewVocabList();
+    }
+
+
+    // EFFECTS: saves the workroom to file
+    private void saveWorkRoom() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(myVocabList);
+            jsonWriter.close();
+            System.out.println("Your Vocabulary List is SAVED to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads workroom from file
+    private void loadWorkRoom() {
+        try {
+            myVocabList = jsonReader.read();
+            System.out.println("Your Vocabulary List is LOADED from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
     }
 
 

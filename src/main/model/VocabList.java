@@ -1,9 +1,15 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writeable;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 //VocabList is a list of Words
-public class VocabList {
+public class VocabList implements Writeable {
     ArrayList<Word> vocabList;
 
     //A new empty list of the word entries
@@ -71,6 +77,30 @@ public class VocabList {
             result = result + "\n" + (vocabList.indexOf(v) + 1) + ". " + v.getName();
         }
         return "****************************\n" + result + "\n****************************";
+    }
+
+
+    // EFFECTS: returns an unmodifiable list of thingies in this workroom
+    public List<Word> getWords() {
+        return Collections.unmodifiableList(vocabList);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("words", wordsToJson());
+        return json;
+    }
+
+    // EFFECTS: returns things in this workroom as a JSON array
+    private JSONArray wordsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Word word: vocabList) {
+            jsonArray.put(word.toJson());
+        }
+
+        return jsonArray;
     }
 
 

@@ -1,7 +1,10 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writeable;
+
 // Word is a second language word entry, with its name, definition, and its original learning context
-public class Word {
+public class Word implements Writeable {
     private String name;
     private String definition;
     private String learningContext;
@@ -28,9 +31,21 @@ public class Word {
     }
 
     //MODIFIES: this
+    //EFFECTS:add newDefinition content to the definition of the word entry
+    public void overrideDefinition(String newDefinition) {
+        this.definition = newDefinition;
+    }
+
+    //MODIFIES: this
     //EFFECTS:add newLearningContext content to the learningContext of the word entry
     public void editLearningContext(String newLearningContext) {
         this.learningContext = this.learningContext + " " + newLearningContext;
+    }
+
+    //MODIFIES: this
+    //EFFECTS:add newLearningContext content to the learningContext of the word entry
+    public void overrideLearningContext(String newLearningContext) {
+        this.learningContext = newLearningContext;
     }
 
     // EFFECTS: returns word name
@@ -58,4 +73,12 @@ public class Word {
                 + "\n*************************";
     }
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("definition", definition);
+        json.put("learning context", learningContext);
+        return json;
+    }
 }
