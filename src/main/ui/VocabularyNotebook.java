@@ -58,6 +58,8 @@ public class VocabularyNotebook {
     private void displayMainMenu() {
         System.out.println("\nEnter a new WORD to create a new word entry, or:");
         System.out.println("\tv -> to view your Vocabulary List");
+        System.out.println("\ts -> save Vocabulary List to file");
+        System.out.println("\tl -> load Vocabulary List from file");
         System.out.println("\tq -> quit");
     }
 
@@ -66,6 +68,10 @@ public class VocabularyNotebook {
     private void processMainMenuCommand(String command) {
         if (command.equals("v")) {
             viewVocabList();
+        } else if (command.equals("s")) {
+            saveWorkRoom();
+        } else if (command.equals("l")) {
+            loadWorkRoom();
         } else {
             buildNewWord(command);
         }
@@ -190,6 +196,8 @@ public class VocabularyNotebook {
     private void displayVocabListMenu() {
         System.out.println("\nPlease type in the word you want to REVIEW, or");
         System.out.println("\tm -> back to main");
+        System.out.println("\ts -> save Vocabulary List to file");
+        System.out.println("\tl -> load Vocabulary List from file");
         System.out.println("\te -> to EDIT a word entry");
         System.out.println("\td -> to DELETE a word entry");
         System.out.println("\tq -> quit");
@@ -200,6 +208,10 @@ public class VocabularyNotebook {
     private void processVocabListCommand(String command) {
         if (command.equals("m")) {
             System.out.println("going back to main menu");
+        } else if (command.equals("s")) {
+            saveWorkRoom();
+        } else if (command.equals("l")) {
+            loadWorkRoom();
         } else if (command.equals("d")) {
             deleteOneWord();    //might not want this
         } else if (command.equals("e")) {

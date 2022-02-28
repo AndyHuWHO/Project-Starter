@@ -38,6 +38,15 @@ class WordTest {
     }
 
     @Test
+    void testOverrideDefinition() {
+        testWordEntry.editDefinition("definition for testVocab");
+        testWordEntry.overrideDefinition("new definition");
+        assertEquals("testVocab", testWordEntry.getName());
+        assertEquals("new definition", testWordEntry.getDefinition());
+        assertEquals("Original Learning Context:", testWordEntry.getLearningContext());
+    }
+
+    @Test
     void testEditLearningContext() {
         testWordEntry.editLearningContext("learning context for testVocab");
         assertEquals("testVocab", testWordEntry.getName());
@@ -45,6 +54,17 @@ class WordTest {
         assertEquals("Original Learning Context: learning context for testVocab",
                 testWordEntry.getLearningContext());
     }
+
+    @Test
+    void testOverrideLearningContext() {
+        testWordEntry.editLearningContext("learning context for testVocab");
+        testWordEntry.overrideLearningContext("new lc");
+        assertEquals("testVocab", testWordEntry.getName());
+        assertEquals("Definition:", testWordEntry.getDefinition());
+        assertEquals("new lc",
+                testWordEntry.getLearningContext());
+    }
+
 
     @Test
     void testMakeWordCard() {
