@@ -59,15 +59,15 @@ public class JsonWriterTest extends JsonTest{
             writer.write(vocabList);
             writer.close();
 
-            JsonReader reader = new JsonReader("./data/testWriterGeneralWorkroom.json");
+            JsonReader reader = new JsonReader("./data/testWriterGeneralVocabList.json");
             vocabList = reader.read();
 
             List<Word> words = vocabList.getWords();
             assertEquals(2, words.size());
-            checkWord("needle", "definition for needle",
-                    "learning context for needle",words.get(0));
-            checkWord("saw", "definition for saw",
-                    "learning context for saw",words.get(1));
+            checkWord("needle", "Definition: definition for needle",
+                    "Original Learning Context: learning context for needle",words.get(0));
+            checkWord("saw", "Definition: definition for saw",
+                    "Original Learning Context: learning context for saw",words.get(1));
 
         } catch (IOException e) {
             fail("Exception should not have been thrown");
