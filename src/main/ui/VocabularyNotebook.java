@@ -297,7 +297,7 @@ public class VocabularyNotebook {
 
     // EFFECTS: displays view delete phase menu options to user
     private void displayDeletePhaseMenu() {
-        System.out.println("\nPlease type in the word you want to DELETE, or");
+        System.out.println("\nPlease select the word you want to DELETE, or");
         System.out.println("\tm -> back to main");
         System.out.println("\tv -> back to view your Vocabulary List");
         System.out.println("\tq -> quit");
