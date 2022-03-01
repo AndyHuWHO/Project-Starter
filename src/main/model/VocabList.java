@@ -38,11 +38,34 @@ public class VocabList implements Writeable {
         return false;
     }
 
+    //MODIFIES: this
+    //EFFECTS: remove a word by its index in the list + 1  from the vocab list if the word is in the list
+    // and return true, if there is no word of the given index in the list, return false
+    public boolean deleteWordByIndex(String index) {
+        for (Word v : vocabList) {
+            if (Integer.toString(vocabList.indexOf(v) + 1).equals(index)) {
+                vocabList.remove(v);
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     //EFFECTS: get a word of the given name from the vocab list
-    public Word findWord(String word) {
+    public Word findWordByName(String word) {
         for (Word v : vocabList) {
             if (v.getName().equals(word)) {
+                return v;
+            }
+        }
+        return null;
+    }
+
+    //EFFECTS: get a word by its index in the list + 1 from the vocab list
+    public Word findWordByIndex(String index) {
+        for (Word v : vocabList) {
+            if (Integer.toString(vocabList.indexOf(v) + 1).equals(index)) {
                 return v;
             }
         }

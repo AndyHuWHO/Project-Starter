@@ -51,15 +51,43 @@ public class VocabListTest {
         assertTrue(testVocabList.isEmpty());
     }
 
+    @Test
+    void testDeleteWordByIndex() {
+        assertFalse(testVocabList.deleteWordByIndex("one"));
+        assertFalse(testVocabList.deleteWordByIndex("1"));
+        testVocabList.addWord(word1);
+        testVocabList.addWord(word2);
+        assertFalse(testVocabList.deleteWordByIndex("3"));
+        assertFalse(testVocabList.deleteWordByIndex("one"));
+        assertTrue(testVocabList.deleteWordByIndex("1"));
+        assertEquals(1,testVocabList.getSize());
+        assertFalse(testVocabList.containsWord(word1));
+        assertFalse(testVocabList.deleteWordByIndex("2"));
+        assertTrue(testVocabList.deleteWordByIndex("1"));
+        assertTrue(testVocabList.isEmpty());
+    }
+
 
     @Test
-    void testFindWord() {
-        assertNull(testVocabList.findWord("one"));
+    void testFindWordByName() {
+        assertNull(testVocabList.findWordByName("one"));
         testVocabList.addWord(word2);
         testVocabList.addWord(word1);
-        assertEquals(word1,testVocabList.findWord("one"));
-        assertEquals(word2,testVocabList.findWord("two"));
-        assertNull(testVocabList.findWord("three"));
+        assertEquals(word1,testVocabList.findWordByName("one"));
+        assertEquals(word2,testVocabList.findWordByName("two"));
+        assertNull(testVocabList.findWordByName("three"));
+    }
+
+
+    @Test
+    void testFindWordByIndex() {
+        assertNull(testVocabList.findWordByIndex("1"));
+        assertNull(testVocabList.findWordByIndex("one"));
+        testVocabList.addWord(word2);
+        testVocabList.addWord(word1);
+        assertEquals(word1,testVocabList.findWordByIndex("2"));
+        assertEquals(word2,testVocabList.findWordByIndex("1"));
+        assertNull(testVocabList.findWordByIndex("one"));
     }
 
 

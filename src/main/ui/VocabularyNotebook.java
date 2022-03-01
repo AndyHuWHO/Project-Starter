@@ -194,7 +194,7 @@ public class VocabularyNotebook {
 
     // EFFECTS: displays view vocabularyList menu options to user
     private void displayVocabListMenu() {
-        System.out.println("\nPlease type in the word you want to REVIEW, or");
+        System.out.println("\nPlease select word you want to REVIEW, or");
         System.out.println("\tm -> back to main");
         System.out.println("\ts -> save Vocabulary List to file");
         System.out.println("\tl -> load Vocabulary List from file");
@@ -217,7 +217,7 @@ public class VocabularyNotebook {
         } else if (command.equals("e")) {
             editWordEntry();
         } else {
-            wordBeingViewed = myVocabList.findWord(command);
+            wordBeingViewed = myVocabList.findWordByIndex(command);
             viewWordEntry(command);
         }
     }
@@ -311,7 +311,7 @@ public class VocabularyNotebook {
         } else if (command.equals("v")) {
             viewVocabList();
         } else {
-            if (myVocabList.deleteWordByName(command)) {
+            if (myVocabList.deleteWordByIndex(command)) {
                 System.out.println(command + " is deleted from the list");
             } else {
                 System.out.println(command + " is not in the list");
@@ -343,7 +343,7 @@ public class VocabularyNotebook {
 
     // EFFECTS: displays view edit entry phase menu options to user
     private void displayEditPhaseMenu() {
-        System.out.println("\nPlease type in the word you want to EDIT, or");
+        System.out.println("\nPlease select the word you want to EDIT, or");
         System.out.println("\tm -> back to main");
         System.out.println("\tv -> back to view your Vocabulary List");
         System.out.println("\tq -> quit");
@@ -357,7 +357,7 @@ public class VocabularyNotebook {
         } else if (command.equals("v")) {
             viewVocabList();
         } else {
-            editEntryName(myVocabList.findWord(command));
+            editEntryName(myVocabList.findWordByIndex(command));
         }
     }
 
