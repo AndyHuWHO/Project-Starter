@@ -54,22 +54,6 @@ public class VocabList implements Writeable {
     }
 
 
-    //MODIFIES: this
-    //EFFECTS: remove a word by its index in the list + 1  from the vocab list if the word is in the list
-    // and return the word, if there is no word of the given index in the list, return null
-    public Word deleteWordIndex(String index) throws NullPointerException {
-        if (vocabList.size() < Integer.parseInt(index)) {
-            throw new NullPointerException();
-        } else {
-            for (Word v : vocabList) {
-                if (Integer.toString(vocabList.indexOf(v) + 1).equals(index)) {
-                    vocabList.remove(v);
-                    return v;
-                }
-            }
-        }
-        return null;
-    }
 
 
     //EFFECTS: get a word of the given name from the vocab list
