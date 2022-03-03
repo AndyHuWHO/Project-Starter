@@ -17,10 +17,10 @@ public class VocabularyNotebook {
     private Word wordBeingEdited;
     private Word wordBeingViewed;
     private VocabList myVocabList;
-    private Scanner input;
+    private final Scanner input;
     boolean keepGoing = true;    //why is this needed??
-    private JsonWriter jsonWriter;
-    private JsonReader jsonReader;
+    private final JsonWriter jsonWriter;
+    private final JsonReader jsonReader;
 
 
     // initialize the VocabularyNotebook Application with an empty VocabList and run the mainMenu
@@ -30,8 +30,37 @@ public class VocabularyNotebook {
         myVocabList = new VocabList();
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
-        mainMenu();
+        beforeMainMenu();
     }
+
+
+    // MODIFIES: this  //does it modify this??
+    // EFFECTS: processes user input at mainMenu
+    private void beforeMainMenu() {
+        String beforeMainMenuCommand;
+
+        displayBeforeMainMenu();
+
+        beforeMainMenuCommand = input.next();
+        beforeMainMenuCommand = beforeMainMenuCommand.trim();
+
+        if (beforeMainMenuCommand.equals("y")) {
+            loadWorkRoom();
+        } else {
+            System.out.println("Previous Vocabulary List is NOT loaded. Starting with a new Vocabulary Notebook");
+        }
+        mainMenu();
+
+    }
+
+    // EFFECTS: displays main menu options to user
+    private void displayBeforeMainMenu() {
+        System.out.println("Welcome to your personalized Vocabulary Notebook Application!");
+        System.out.println("\nWould you like to LOAD previously saved Vocabulary List? "
+                + "Please enter [y]  for YES or [n] for NO");
+    }
+
+
 
 
     // MODIFIES: this  //does it modify this??
@@ -51,7 +80,7 @@ public class VocabularyNotebook {
                 processMainMenuCommand(mainMenuCommand);
             }
         }
-        System.out.println("\nGoodbye!");
+        beforeQuitting();
     }
 
     // EFFECTS: displays main menu options to user
@@ -76,8 +105,6 @@ public class VocabularyNotebook {
             buildNewWord(command);
         }
     }
-
-
 
 
 
@@ -123,9 +150,6 @@ public class VocabularyNotebook {
     }
 
 
-
-
-
     //EFFECTS: ask user to put in the learning context for the word or do other commands
     private void learningContextPhase() {
         String learningContextPhaseCommand;
@@ -165,10 +189,6 @@ public class VocabularyNotebook {
             System.out.println(newWord.getName() + " is SAVED with definition and original learning context");
         }
     }
-
-
-
-
 
 
     //EFFECTS: display word names in the vocab list with user options.
@@ -223,12 +243,10 @@ public class VocabularyNotebook {
     }
 
 
-
-
     //EFFECTS: display word entry information with user options.
-    private void viewWordEntry(String wordName) {
+    private void viewWordEntry(String wordIndex) {
         if (wordBeingViewed == null) {
-            System.out.println(wordName + " is not in the list");
+            System.out.println("There is no word with index number " + wordIndex + " in the list");
             viewVocabList();
         } else {
             String vocabListCommand;
@@ -275,8 +293,6 @@ public class VocabularyNotebook {
     }
 
 
-
-
     //REQUIRES: vocabList is not empty
     //EFFECTS: display delete phase options
     private void deleteOneWord() {
@@ -311,16 +327,14 @@ public class VocabularyNotebook {
         } else if (command.equals("v")) {
             viewVocabList();
         } else {
-            if (myVocabList.deleteWordByIndex(command)) {
-                System.out.println(command + " is deleted from the list");
+            if (!(myVocabList.deleteWordByIndex(command) == null)) {
+                System.out.println("Word number " + command + " in the list was deleted");
             } else {
-                System.out.println(command + " is not in the list");
+                System.out.println("There is no word with index number " + command + " in the list");
             }
             viewVocabList();
         }
     }
-
-
 
 
     //REQUIRES: vocabList is not empty
@@ -362,10 +376,6 @@ public class VocabularyNotebook {
     }
 
 
-
-
-
-
     //REQUIRES: vocabList is not empty
     //EFFECTS: display edit name phase options
     private void editEntryName(Word word) {
@@ -403,15 +413,12 @@ public class VocabularyNotebook {
     private void processEditNamePhaseCommand(String command) {
         if (command.equals("v")) {
             viewVocabList();
-        }  else {
+        } else {
             wordBeingEdited.editName(command);
             System.out.println("Name had been updated");
             editEntryDefinition();
         }
     }
-
-
-
 
 
     //REQUIRES: vocabList is not empty
@@ -450,8 +457,6 @@ public class VocabularyNotebook {
     }
 
 
-
-
     //REQUIRES: vocabList is not empty
     //EFFECTS: display edit name phase options
     private void editEntryLearningContext() {
@@ -486,6 +491,36 @@ public class VocabularyNotebook {
     }
 
 
+    // MODIFIES: this  //does it modify this??
+    // EFFECTS: processes user input at mainMenu
+    private void beforeQuitting() {
+        String beforeQuittingCommand;
+
+        displayBeforeQuittingMenu();
+
+        beforeQuittingCommand = input.next();
+        beforeQuittingCommand = beforeQuittingCommand.trim();
+
+        if (beforeQuittingCommand.equals("y")) {
+            saveWorkRoom();
+            System.out.println("\nYour Vocabulary List is SAVED! See you next time!");
+        } else if (beforeQuittingCommand.equals("n")) {
+            System.out.println("You did NOT save your Vocabulary List. See you next time!");
+        } else {
+            System.out.println("Instruction not correctly read. Please try again.\n");
+            beforeQuitting();
+        }
+
+    }
+
+    // EFFECTS: displays main menu options to user
+    private void displayBeforeQuittingMenu() {
+        System.out.println("You are about to exit your Vocabulary Application!");
+        System.out.println("\nWould you like to SAVE your Vocabulary List? "
+                + "Please enter [y]  for YES or [n] for NO");
+    }
+
+
     // EFFECTS: saves the workroom to file
     private void saveWorkRoom() {
         try {
@@ -508,7 +543,6 @@ public class VocabularyNotebook {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
-
 
 
 }

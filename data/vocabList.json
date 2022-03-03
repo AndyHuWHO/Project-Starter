@@ -13,5 +13,50 @@
         "name": "instantiate",
         "definition": "Definition: illustrate, examplify",
         "learning context": "Original Learning Context: cpsc210  instatiation "
+    },
+    {
+        "name": "terse",
+        "definition": "Definition: sparing in the use of words, abrupt. 简要的",
+        "learning context": "Original Learning Context: terse prose"
+    },
+    {
+        "name": "polymorphism",
+        "definition": "Definition: 多态性，多形性 the occurrence of more than one form of individual in a single species within an interbreeding population",
+        "learning context": "Original Learning Context: cpsc210 abstraction"
+    },
+    {
+        "name": "statical",
+        "definition": "Definition: 静止静态",
+        "learning context": "Original Learning Context: java is a statically typed programming language "
+    },
+    {
+        "name": "UML",
+        "definition": "Definition: unified modeling language   ",
+        "learning context": "Original Learning Context: cpsc 210 interface abstract classed"
+    },
+    {
+        "name": "litigous",
+        "definition": "Definition: inclined to showing disagreement",
+        "learning context": "Original Learning Context: it's not important to be litigous and list absolutly everything "
+    },
+    {
+        "name": "caveat",
+        "definition": "Definition: a warning that particular things need to be considered before sth can be done  \\n try",
+        "learning context": "Original Learning Context: cpsc210 video  \\n try"
+    },
+    {
+        "name": "generic",
+        "definition": "Definition: 通用的 类属的 shared by, including or typical of a whole group of things; not specific  ",
+        "learning context": "Original Learning Context: we do not want to provide a generic version of this fly method\\ abstract classes are great for capturing generic concepts that have default behavior and data, but which should not be made into objects"
+    },
+    {
+        "name": "obscure",
+        "definition": "Definition: difficult to understand",
+        "learning context": "Original Learning Context: guest lecture on hemingway's novel, jake looking at brett"
+    },
+    {
+        "name": "riveting",
+        "definition": "Definition: completely compelling engrossing",
+        "learning context": "Original Learning Context: this riveting piece in IKB"
     }
 ]}

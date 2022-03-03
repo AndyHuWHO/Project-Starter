@@ -53,17 +53,17 @@ public class VocabListTest {
 
     @Test
     void testDeleteWordByIndex() {
-        assertFalse(testVocabList.deleteWordByIndex("one"));
-        assertFalse(testVocabList.deleteWordByIndex("1"));
+        assertNull(testVocabList.deleteWordByIndex("one"));
+        assertNull(testVocabList.deleteWordByIndex("1"));
         testVocabList.addWord(word1);
         testVocabList.addWord(word2);
-        assertFalse(testVocabList.deleteWordByIndex("3"));
-        assertFalse(testVocabList.deleteWordByIndex("one"));
-        assertTrue(testVocabList.deleteWordByIndex("1"));
+        assertNull(testVocabList.deleteWordByIndex("3"));
+        assertNull(testVocabList.deleteWordByIndex("one"));
+        assertEquals(word1, testVocabList.deleteWordByIndex("1"));
         assertEquals(1,testVocabList.getSize());
         assertFalse(testVocabList.containsWord(word1));
-        assertFalse(testVocabList.deleteWordByIndex("2"));
-        assertTrue(testVocabList.deleteWordByIndex("1"));
+        assertNull(testVocabList.deleteWordByIndex("2"));
+        assertEquals(word2, testVocabList.deleteWordByIndex("1"));
         assertTrue(testVocabList.isEmpty());
     }
 
