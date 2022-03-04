@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 // Represents a reader that reads VocabList from JSON data stored in file
 public class JsonReader {
-    private String source;
+    private final String source;
 
     // EFFECTS: constructs reader to read from source file
     public JsonReader(String source) {
@@ -68,4 +68,5 @@ public class JsonReader {
         word.overrideLearningContext(learningContext);
         vocabList.addWord(word);
     }
-}
+}  //https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
+//code in this class is based on the code from the link above

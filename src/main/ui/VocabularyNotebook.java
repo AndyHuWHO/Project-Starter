@@ -61,8 +61,6 @@ public class VocabularyNotebook {
     }
 
 
-
-
     // MODIFIES: this  //does it modify this??
     // EFFECTS: processes user input at mainMenu
     private void mainMenu() {
@@ -105,7 +103,6 @@ public class VocabularyNotebook {
             buildNewWord(command);
         }
     }
-
 
 
     // EFFECTS: start building a new word entry with given name by
@@ -237,7 +234,7 @@ public class VocabularyNotebook {
         } else if (command.equals("e")) {
             editWordEntry();
         } else {
-            wordBeingViewed = myVocabList.findWordByIndex(command);
+            // wordBeingViewed = myVocabList.findWordByIndex(command);
             viewWordEntry(command);
         }
     }
@@ -245,6 +242,7 @@ public class VocabularyNotebook {
 
     //EFFECTS: display word entry information with user options.
     private void viewWordEntry(String wordIndex) {
+        wordBeingViewed = myVocabList.findWordByIndex(wordIndex);
         if (wordBeingViewed == null) {
             System.out.println("There is no word with index number " + wordIndex + " in the list");
             viewVocabList();
@@ -327,8 +325,9 @@ public class VocabularyNotebook {
         } else if (command.equals("v")) {
             viewVocabList();
         } else {
-            if (!(myVocabList.deleteWordByIndex(command) == null)) {
-                System.out.println("Word number " + command + " in the list was deleted");
+            Word wordDeleted = myVocabList.deleteWordByIndex(command);
+            if (!(wordDeleted == null)) {
+                System.out.println("Word number " + command + ", \"" + wordDeleted.getName() + "\" was deleted");
             } else {
                 System.out.println("There is no word with index number " + command + " in the list");
             }
@@ -545,6 +544,7 @@ public class VocabularyNotebook {
     }
 
 
-}
+}  //https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
+//code in this class is based on the code from the link above for data persistence
 
 

@@ -68,18 +68,18 @@ class WordTest {
 
     @Test
     void testMakeWordCard() {
-        assertEquals("************************\n" +
+        assertEquals("______________________________________________________\n" +
                 "Word: testVocab\n" +
                 "Definition:\n" +
                 "Original Learning Context:\n" +
-                "*************************", testWordEntry.makeWordCard());
+                "______________________________________________________", testWordEntry.makeWordCard());
         testWordEntry.editDefinition("definition for testVocab");
         testWordEntry.editLearningContext("learning context for testVocab");
-        assertEquals("************************\n" +
+        assertEquals("______________________________________________________\n" +
                 "Word: testVocab\n" +
                 "Definition: definition for testVocab\n" +
                 "Original Learning Context: learning context for testVocab\n" +
-                "*************************",testWordEntry.makeWordCard());
+                "______________________________________________________",testWordEntry.makeWordCard());
     }
 
 

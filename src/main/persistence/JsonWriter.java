@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
-    private String destination;
+    private final String destination;
 
     // EFFECTS: constructs writer to write to destination file
     public JsonWriter(String destination) {
@@ -43,4 +43,5 @@ public class JsonWriter {
     private void saveToFile(String json) {
         writer.print(json);
     }
-}
+}  //https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
+//code from this class is used from the link above

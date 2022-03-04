@@ -66,11 +66,11 @@ public class Word implements Writeable {
 
     //EFFECTS: to string the word entry name, definition, and learning context together to make a word card
     public String makeWordCard() {
-        return "************************"
+        return "______________________________________________________"
                 + "\nWord: " + name
                 + "\n" + definition
                 + "\n" + learningContext
-                + "\n*************************";
+                + "\n______________________________________________________";
     }
 
     @Override
@@ -80,5 +80,6 @@ public class Word implements Writeable {
         json.put("definition", definition);
         json.put("learning context", learningContext);
         return json;
-    }
+    }  //https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
+    //code used from the link above
 }

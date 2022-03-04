@@ -39,7 +39,6 @@ public class VocabList implements Writeable {
     }
 
 
-
     //MODIFIES: this
     //EFFECTS: remove a word by its index in the list + 1  from the vocab list if the word is in the list
     // and return the word, if there is no word of the given index in the list, return null
@@ -52,8 +51,6 @@ public class VocabList implements Writeable {
         }
         return null;
     }
-
-
 
 
     //EFFECTS: get a word of the given name from the vocab list
@@ -100,7 +97,7 @@ public class VocabList implements Writeable {
     //EFFECTS: to make a list of the words' names in the vocab list
     public String toListVocabulary() {
         String result = "Below is your vocab list:";
-        for (Word v: vocabList) {
+        for (Word v : vocabList) {
             result = result + "\n" + (vocabList.indexOf(v) + 1) + ". " + v.getName();
         }
         return "****************************\n" + result + "\n****************************";
@@ -112,23 +109,26 @@ public class VocabList implements Writeable {
         return Collections.unmodifiableList(vocabList);
     }
 
+
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("words", wordsToJson());
         return json;
-    }
+    }  //https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
+    //code used from the link above
 
-    // EFFECTS: returns things in this workroom as a JSON array
+    // EFFECTS: returns words in this vocabList as a JSON array
     private JSONArray wordsToJson() {
         JSONArray jsonArray = new JSONArray();
 
-        for (Word word: vocabList) {
+        for (Word word : vocabList) {
             jsonArray.put(word.toJson());
         }
 
         return jsonArray;
-    }
+    }   //https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
+    //code used from the link above
 
 
 }
