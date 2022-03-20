@@ -45,7 +45,7 @@ public class VocabularyNotebook {
         beforeMainMenuCommand = beforeMainMenuCommand.trim();
 
         if (beforeMainMenuCommand.equals("y")) {
-            loadWorkRoom();
+            loadVocabList();
         } else {
             System.out.println("Previous Vocabulary List is NOT loaded. Starting with a new Vocabulary Notebook");
         }
@@ -96,9 +96,9 @@ public class VocabularyNotebook {
         if (command.equals("v")) {
             viewVocabList();
         } else if (command.equals("s")) {
-            saveWorkRoom();
+            saveVocabList();
         } else if (command.equals("l")) {
-            loadWorkRoom();
+            loadVocabList();
         } else {
             buildNewWord(command);
         }
@@ -226,9 +226,9 @@ public class VocabularyNotebook {
         if (command.equals("m")) {
             System.out.println("going back to main menu");
         } else if (command.equals("s")) {
-            saveWorkRoom();
+            saveVocabList();
         } else if (command.equals("l")) {
-            loadWorkRoom();
+            loadVocabList();
         } else if (command.equals("d")) {
             deleteOneWord();    //might not want this
         } else if (command.equals("e")) {
@@ -501,7 +501,7 @@ public class VocabularyNotebook {
         beforeQuittingCommand = beforeQuittingCommand.trim();
 
         if (beforeQuittingCommand.equals("y")) {
-            saveWorkRoom();
+            saveVocabList();
             System.out.println("\nYour Vocabulary List is SAVED! See you next time!");
         } else if (beforeQuittingCommand.equals("n")) {
             System.out.println("You did NOT save your Vocabulary List. See you next time!");
@@ -521,7 +521,7 @@ public class VocabularyNotebook {
 
 
     // EFFECTS: saves the workroom to file
-    private void saveWorkRoom() {
+    private void saveVocabList() {
         try {
             jsonWriter.open();
             jsonWriter.write(myVocabList);
@@ -534,7 +534,7 @@ public class VocabularyNotebook {
 
     // MODIFIES: this
     // EFFECTS: loads workroom from file
-    private void loadWorkRoom() {
+    private void loadVocabList() {
         try {
             myVocabList = jsonReader.read();
             System.out.println("Your Vocabulary List is LOADED from " + JSON_STORE);
