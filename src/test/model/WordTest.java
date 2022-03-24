@@ -40,7 +40,7 @@ class WordTest {
     @Test
     void testOverrideDefinition() {
         testWordEntry.editDefinition("definition for testVocab");
-        testWordEntry.overrideDefinition("new definition");
+        testWordEntry.updateDefinition("new definition");
         assertEquals("testVocab", testWordEntry.getName());
         assertEquals("new definition", testWordEntry.getDefinition());
         assertEquals("Original Learning Context:", testWordEntry.getLearningContext());
@@ -58,7 +58,7 @@ class WordTest {
     @Test
     void testOverrideLearningContext() {
         testWordEntry.editLearningContext("learning context for testVocab");
-        testWordEntry.overrideLearningContext("new lc");
+        testWordEntry.updateLearningContext("new lc");
         assertEquals("testVocab", testWordEntry.getName());
         assertEquals("Definition:", testWordEntry.getDefinition());
         assertEquals("new lc",

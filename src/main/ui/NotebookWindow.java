@@ -20,7 +20,7 @@ public class NotebookWindow implements ActionListener {
     private JLabel mvpLabel;
     protected JFrame mainFrame;
 
-    private Word newWord;
+    protected Word newWord;
     private Word wordBeingEdited;
     private Word wordBeingViewed;
     protected VocabList myVocabList;
@@ -118,6 +118,7 @@ public class NotebookWindow implements ActionListener {
             newWord = new Word(wordTextField.getText());
             myVocabList.addWord(newWord);
             wordTextField.setText("");
+            new NewWordBuildingWindow(this);
 
             System.out.println(wordTextField.getText() + " was added to myVocabList");
         } else if (e.getSource() == viewNoteBookButton) {

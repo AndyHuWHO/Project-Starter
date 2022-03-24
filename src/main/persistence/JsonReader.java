@@ -64,8 +64,8 @@ public class JsonReader {
         String definition = jsonObject.getString("definition");
         String learningContext = jsonObject.getString("learning context");
         Word word = new Word(name);
-        word.overrideDefinition(definition);
-        word.overrideLearningContext(learningContext);
+        word.updateDefinition(definition);
+        word.updateLearningContext(learningContext);
         vocabList.addWord(word);
     }
 }  //https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git

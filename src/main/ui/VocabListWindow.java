@@ -148,17 +148,20 @@ public class VocabListWindow implements ListSelectionListener {
     private class WordOptionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            int index = list.getSelectedIndex();
             if (e.getSource() == viewButton) {
                 System.out.println("viewing");
                 System.out.println(myVocabList.findWordByIndex(list.getSelectedIndex()).getName());
                 System.out.println(myVocabList.findWordByIndex(list.getSelectedIndex()).getDefinition());
                 System.out.println(myVocabList.findWordByIndex(list.getSelectedIndex()).getLearningContext());
+
+                new WordViewingWindow(myVocabList.findWordByIndex(index));
+
             } else if (e.getSource() == deleteButton) {
                 System.out.println("will delete");
 
 
-                int index = list.getSelectedIndex();
-                listModel.remove(index);
+                //listModel.remove(index);
                 myVocabList.deleteWordByIndex(index);
 
                 int size = listModel.getSize();

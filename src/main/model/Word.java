@@ -32,7 +32,7 @@ public class Word implements Writeable {
 
     //MODIFIES: this
     //EFFECTS:add newDefinition content to the definition of the word entry
-    public void overrideDefinition(String newDefinition) {
+    public void updateDefinition(String newDefinition) {
         this.definition = newDefinition;
     }
 
@@ -44,7 +44,7 @@ public class Word implements Writeable {
 
     //MODIFIES: this
     //EFFECTS:add newLearningContext content to the learningContext of the word entry
-    public void overrideLearningContext(String newLearningContext) {
+    public void updateLearningContext(String newLearningContext) {
         this.learningContext = newLearningContext;
     }
 
