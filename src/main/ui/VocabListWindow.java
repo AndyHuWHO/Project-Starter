@@ -4,17 +4,22 @@ import model.VocabList;
 import model.Word;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class VocabListWindow extends JFrame implements ActionListener {
+public class VocabListWindow implements ListSelectionListener {
     private JScrollPane vocabListScrollPane;
+    private JFrame vocabListFrame;
     private JList list;
     private DefaultListModel listModel;
     private JPanel navigationPanel;
-    private JPanel optionPanel;
+    private JPanel wordOptionPanel;
     private JButton backButton;
+    private JButton viewButton;
+    private JButton deleteButton;
     private final JFrame myFrame;
     private VocabList myVocabList;
 
@@ -23,22 +28,26 @@ public class VocabListWindow extends JFrame implements ActionListener {
         this.myFrame = notebookWindow.mainFrame;
         this.myVocabList = notebookWindow.myVocabList;
         setupFrame();
-        setVisible(true);
+        //setVisible(true);
+        setupWordOptionPanel();
+        vocabListFrame.add(wordOptionPanel);
         setupNavigationPanel();
-        add(navigationPanel);
+        vocabListFrame.add(navigationPanel);
         setupScrollPane();
-        add(vocabListScrollPane);
+        vocabListFrame.add(vocabListScrollPane);
 
 
     }
 
 
     private void setupFrame() {
-        setTitle("My Vocabulary Notebook");
-        setSize(600, 500);
-        setLayout(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setBackground(new Color(195, 243, 241));
+        vocabListFrame = new JFrame();
+        vocabListFrame.setTitle("My Vocabulary Notebook");
+        vocabListFrame.setSize(600, 500);
+        vocabListFrame.setLayout(null);
+        vocabListFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        vocabListFrame.getContentPane().setBackground(new Color(195, 243, 241));
+        vocabListFrame.setVisible(true);
     }
 
 
@@ -63,6 +72,22 @@ public class VocabListWindow extends JFrame implements ActionListener {
         }
     }
 
+    //// set up the Option JPanel for main frame
+    private void setupWordOptionPanel() {
+        wordOptionPanel = new JPanel();
+        //navigationPanel.setBackground(new Color(255, 255, 255));
+        wordOptionPanel.setBounds(350, 50, 100, 200);
+        wordOptionPanel.setLayout(new GridLayout(2,1));
+        viewButton = new JButton("view word");
+        viewButton.addActionListener(new WordOptionListener());
+        deleteButton = new JButton("delete word");
+        deleteButton.addActionListener(new WordOptionListener());
+        //viewNoteBookButton.setBackground(new Color(220, 187, 102));
+
+        wordOptionPanel.add(viewButton);
+        wordOptionPanel.add(deleteButton);
+    }
+
 
     //// set up the Navigation JPanel for main frame
     private void setupNavigationPanel() {
@@ -73,23 +98,84 @@ public class VocabListWindow extends JFrame implements ActionListener {
         backButton = new JButton("Back");
         backButton.setBounds(0, 0, 200, 80);
         //viewNoteBookButton.setBackground(new Color(220, 187, 102));
-        backButton.addActionListener(this);
+        backButton.addActionListener(new NavigationListener());
         navigationPanel.add(backButton);
     }
 
-    private void setupBackButton() {
-        backButton = new JButton("Back");
-        backButton.setBounds(0, 400, 200, 100);
-        backButton.addActionListener(this);
-    }
+//    private void setupBackButton() {
+//        backButton = new JButton("Back");
+//        backButton.setBounds(0, 400, 200, 100);
+//        backButton.addActionListener(new NavigationListener());
+//    }
+//
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//        if (e.getSource() == backButton) {
+//            this.dispose();
+//            myFrame.setVisible(true);
+//            System.out.println("I did it");
+//        }
+//
+//    }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == backButton) {
-            this.dispose();
-            myFrame.setVisible(true);
-            System.out.println("I did it");
-        }
+    public void valueChanged(ListSelectionEvent e) {
+        if (e.getValueIsAdjusting() == false) {
 
+            if (list.getSelectedIndex() == -1) {
+                //No selection, disable fire button.
+                deleteButton.setEnabled(false);
+
+            } else {
+                //Selection, enable the fire button.
+                deleteButton.setEnabled(true);
+            }
+        }
+    }
+
+    private class NavigationListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == backButton) {
+                vocabListFrame.dispose();
+                myFrame.setVisible(true);
+                System.out.println("I did it");
+            }
+
+        }
+    }
+
+    private class WordOptionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == viewButton) {
+                System.out.println("viewing");
+                System.out.println(myVocabList.findWordByIndex(list.getSelectedIndex()).getName());
+                System.out.println(myVocabList.findWordByIndex(list.getSelectedIndex()).getDefinition());
+                System.out.println(myVocabList.findWordByIndex(list.getSelectedIndex()).getLearningContext());
+            } else if (e.getSource() == deleteButton) {
+                System.out.println("will delete");
+
+
+                int index = list.getSelectedIndex();
+                listModel.remove(index);
+                myVocabList.deleteWordByIndex(index);
+
+                int size = listModel.getSize();
+
+                if (size == 0) { //Nobody's left, disable firing.
+                    deleteButton.setEnabled(false);
+
+                } else { //Select an index.
+                    if (index == listModel.getSize()) {
+                        //removed item in last position
+                        index--;
+                    }
+
+                    list.setSelectedIndex(index);
+                    list.ensureIndexIsVisible(index);
+                }
+            }
+        }
     }
 }
