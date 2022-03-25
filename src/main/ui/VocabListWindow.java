@@ -33,6 +33,7 @@ public class VocabListWindow implements ListSelectionListener {
     private JButton loadVocabListButton;
     private JButton viewButton;
     private JButton deleteButton;
+    private NotebookWindow notebookWindow;
 
     private final JFrame myFrame;
     private VocabList myVocabList;
@@ -44,6 +45,7 @@ public class VocabListWindow implements ListSelectionListener {
         jsonReader = new JsonReader(JSON_STORE);
 
         this.myFrame = notebookWindow.mainFrame;
+        this.notebookWindow = notebookWindow;
         this.myVocabList = notebookWindow.myVocabList;
 
         setupFrame();
@@ -100,6 +102,7 @@ public class VocabListWindow implements ListSelectionListener {
 
     //put the names of the words in current vocab list to listModel
     private void renderVocabListToListModel(DefaultListModel listModel) {
+        listModel.removeAllElements();
         for (Word w : myVocabList.getVocabList()) {
             listModel.addElement(w.getName());
 
@@ -157,12 +160,8 @@ public class VocabListWindow implements ListSelectionListener {
     private void loadVocabList() {
         try {
             this.myVocabList = jsonReader.read();
+            this.notebookWindow.myVocabList = this.myVocabList;
 
-            renderVocabListToListModel(listModel);
-            list.setModel(listModel);
-            vocabListScrollPane.repaint();
-
-            checkEmptyList();
             System.out.println("Your Vocabulary List is LOADED from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
@@ -190,6 +189,11 @@ public class VocabListWindow implements ListSelectionListener {
                 saveVocabList();
             } else if (e.getSource() == loadVocabListButton) {
                 loadVocabList();
+                renderVocabListToListModel(listModel);
+                list.setModel(listModel);
+                vocabListScrollPane.repaint();
+                checkEmptyList();
+                loadVocabListButton.setEnabled(false);
 
             }
 

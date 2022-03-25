@@ -1,5 +1,22 @@
-{"words": [{
-    "name": "one",
-    "definition": "Definition:",
-    "learning context": "Original Learning Context:"
-}]}
+{"words": [
+    {
+        "name": "one",
+        "definition": "Definition:",
+        "learning context": "Original Learning Context:"
+    },
+    {
+        "name": "two",
+        "definition": "Definition:",
+        "learning context": "Original Learning Context:"
+    },
+    {
+        "name": "three",
+        "definition": "Definition:",
+        "learning context": "Original Learning Context:"
+    },
+    {
+        "name": "four",
+        "definition": "Definition:",
+        "learning context": "Original Learning Context:"
+    }
+]}

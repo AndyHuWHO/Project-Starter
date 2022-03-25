@@ -161,6 +161,7 @@ public class NotebookWindow implements ActionListener {
             saveVocabList();
         } else if (e.getSource() == loadVocabListButton) {
             loadVocabList();
+//            loadVocabListButton.setEnabled(false);
         }
 
     }
