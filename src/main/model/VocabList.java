@@ -82,7 +82,7 @@ public class VocabList implements Writeable {
     }
 
 
-    //EFFECTS: get a word by its index in the list + 1 from the vocab list
+    //EFFECTS: get a word by its index in the list from the vocab list
     public Word findWordByIndex(int index) {
         for (Word v : vocabList) {
             if (vocabList.indexOf(v) == (index)) {

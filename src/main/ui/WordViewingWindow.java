@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+// Window for viewing a word entry in Notebook
 public class WordViewingWindow implements ActionListener {
     private final Word wordBeingViewed;
 
@@ -20,6 +21,7 @@ public class WordViewingWindow implements ActionListener {
     private JButton backButton;
 
 
+    //construct a word viewing window
     public WordViewingWindow(Word word) {
         this.wordBeingViewed = word;
 
@@ -30,6 +32,7 @@ public class WordViewingWindow implements ActionListener {
 
     }
 
+    //set up a JLabel for the name of the word
     private void setupWordLabel() {
         wordLabel = new JLabel("Word: " + wordBeingViewed.getName());
         wordLabel.setForeground(new Color(250, 24, 77));
@@ -38,6 +41,7 @@ public class WordViewingWindow implements ActionListener {
     }
 
 
+    //set up the frame for this class
     private void setupWordBuildingFrame() {
         wordViewingFrame = new JFrame();
         wordViewingFrame.setTitle("My Vocabulary Notebook");

@@ -106,7 +106,7 @@ public class VocabListTest {
 
 
     @Test
-    void testFindWordByIndex() {
+    void testFindWordByStringIndex() {
         assertNull(testVocabList.findWordByIndex("1"));
         assertNull(testVocabList.findWordByIndex("one"));
         testVocabList.addWord(word2);
@@ -114,6 +114,17 @@ public class VocabListTest {
         assertEquals(word1,testVocabList.findWordByIndex("2"));
         assertEquals(word2,testVocabList.findWordByIndex("1"));
         assertNull(testVocabList.findWordByIndex("one"));
+    }
+
+    @Test
+    void testFindWordByIndex() {
+        assertNull(testVocabList.findWordByIndex(1));
+        assertNull(testVocabList.findWordByIndex(0));
+        testVocabList.addWord(word2);
+        testVocabList.addWord(word1);
+        assertEquals(word1,testVocabList.findWordByIndex(1));
+        assertEquals(word2,testVocabList.findWordByIndex(0));
+        assertNull(testVocabList.findWordByIndex(2));
     }
 
 

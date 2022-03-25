@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+// Window for building new word to Notebook
 public class NewWordBuildingWindow implements ActionListener {
     Word newWord;
     VocabList myVocabList;
@@ -19,6 +20,7 @@ public class NewWordBuildingWindow implements ActionListener {
     JButton saveButton;
     JButton cancelButton;
 
+    //construct a new word building window
     public NewWordBuildingWindow(NotebookWindow notebookWindow) {
         this.newWord = notebookWindow.newWord;
         this.myVocabList = notebookWindow.myVocabList;
@@ -28,6 +30,7 @@ public class NewWordBuildingWindow implements ActionListener {
 
     }
 
+    //set up the frame in this class
     private void setupWordBuildingFrame() {
         wordBuildingFrame = new JFrame();
         wordBuildingFrame.setTitle("My Vocabulary Notebook");
@@ -38,7 +41,7 @@ public class NewWordBuildingWindow implements ActionListener {
         wordBuildingFrame.setVisible(true);
     }
 
-    //// set up the Navigation JPanel for main frame
+    //// set up the center JPanel for this class
     private void setupCenterPanel() {
         definitionArea = new JTextArea(newWord.getDefinition(),5,20);
         //definitionField.setPreferredSize(new Dimension(350, 100));

@@ -1,12 +1,5 @@
-{"words": [
-    {
-        "name": "word1",
-        "definition": "Definition:sjfaiosfjoaei",
-        "learning context": "Original Learning Contextfaefjaseiof"
-    },
-    {
-        "name": "word2",
-        "definition": "Definition:",
-        "learning context": "Original Learning Context:"
-    }
-]}
+{"words": [{
+    "name": "word1",
+    "definition": "Definition:",
+    "learning context": "Original Learning Context:"
+}]}

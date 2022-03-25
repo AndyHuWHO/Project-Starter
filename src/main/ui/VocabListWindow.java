@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+// Window for view Vocabulary List in Notebook
 public class VocabListWindow implements ListSelectionListener {
     private static final String JSON_STORE = "./data/testGUIVocabList.json";
     private final JsonWriter jsonWriter;
@@ -36,6 +37,7 @@ public class VocabListWindow implements ListSelectionListener {
     private VocabList myVocabList;
 
 
+    //construct a new Vocabulary list viewing window
     public VocabListWindow(NotebookWindow notebookWindow) {
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
@@ -55,6 +57,7 @@ public class VocabListWindow implements ListSelectionListener {
     }
 
 
+    //set up the frame in this class
     private void setupFrame() {
         vocabListFrame = new JFrame();
         vocabListFrame.setTitle("My Vocabulary Notebook");
@@ -66,10 +69,11 @@ public class VocabListWindow implements ListSelectionListener {
     }
 
 
+    //set up the Scroll pane for VocabList
     private void setupScrollPane() {
         listModel = new DefaultListModel();
         //listModel.addElement("try");
-        renderVocablistToListModel();
+        renderVocabListToListModel();
         list = new JList(listModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setSelectedIndex(0);
@@ -80,7 +84,8 @@ public class VocabListWindow implements ListSelectionListener {
         //vocabListScrollPane.setOpaque(true);
     }
 
-    private void renderVocablistToListModel() {
+    //put the names of the words in current vocab list to listModel
+    private void renderVocabListToListModel() {
         for (Word w: myVocabList.getVocabList()) {
             listModel.addElement(w.getName());
 

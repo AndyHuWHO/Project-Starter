@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+// Opening Window for the Notebook, new word can be created
 public class NotebookWindow implements ActionListener {
     private static final String JSON_STORE = "./data/testGUIVocabList.json";
 
@@ -30,7 +31,7 @@ public class NotebookWindow implements ActionListener {
     private final JsonWriter jsonWriter;
     private final JsonReader jsonReader;
 
-    // constructs the Notebook main frame
+    // constructs the Notebook window
     public NotebookWindow() {
         setupMainFrame();
         setupMainLabel();
