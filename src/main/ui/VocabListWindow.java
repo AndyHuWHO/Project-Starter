@@ -22,17 +22,18 @@ public class VocabListWindow implements ListSelectionListener {
 
 
     private JScrollPane vocabListScrollPane;
-    private JFrame vocabListFrame;
     private JList list;
     private DefaultListModel listModel;
+
+    private JFrame vocabListFrame;
     private JPanel navigationPanel;
     private JPanel wordOptionPanel;
     private JButton backButton;
     private JButton saveVocabListButton;
     private JButton loadVocabListButton;
-
     private JButton viewButton;
     private JButton deleteButton;
+
     private final JFrame myFrame;
     private VocabList myVocabList;
 
@@ -44,15 +45,27 @@ public class VocabListWindow implements ListSelectionListener {
 
         this.myFrame = notebookWindow.mainFrame;
         this.myVocabList = notebookWindow.myVocabList;
+
         setupFrame();
-        //setVisible(true);
+        setupScrollPane();
+        vocabListFrame.add(vocabListScrollPane);
         setupWordOptionPanel();
+        checkEmptyList();
         vocabListFrame.add(wordOptionPanel);
         setupNavigationPanel();
         vocabListFrame.add(navigationPanel);
-        setupScrollPane();
-        vocabListFrame.add(vocabListScrollPane);
 
+
+
+    }
+
+    //disable view and delete buttons if index is < 0
+    private void checkEmptyList() {
+        int size = listModel.getSize();
+        if (size == 0) {
+            viewButton.setEnabled(false);
+            deleteButton.setEnabled(false);
+        }
 
     }
 
@@ -72,21 +85,18 @@ public class VocabListWindow implements ListSelectionListener {
     //set up the Scroll pane for VocabList
     private void setupScrollPane() {
         listModel = new DefaultListModel();
-        //listModel.addElement("try");
         renderVocabListToListModel();
         list = new JList(listModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setSelectedIndex(0);
-        //list.addListSelectionListener(this);
         list.setVisibleRowCount(5);
         vocabListScrollPane = new JScrollPane(list);
         vocabListScrollPane.setBounds(50, 50, 300, 300);
-        //vocabListScrollPane.setOpaque(true);
     }
 
     //put the names of the words in current vocab list to listModel
     private void renderVocabListToListModel() {
-        for (Word w: myVocabList.getVocabList()) {
+        for (Word w : myVocabList.getVocabList()) {
             listModel.addElement(w.getName());
 
         }
@@ -95,14 +105,12 @@ public class VocabListWindow implements ListSelectionListener {
     //// set up the Option JPanel for main frame
     private void setupWordOptionPanel() {
         wordOptionPanel = new JPanel();
-        //navigationPanel.setBackground(new Color(255, 255, 255));
         wordOptionPanel.setBounds(350, 50, 100, 200);
-        wordOptionPanel.setLayout(new GridLayout(2,1));
+        wordOptionPanel.setLayout(new GridLayout(2, 1));
         viewButton = new JButton("view word");
         viewButton.addActionListener(new WordOptionListener());
         deleteButton = new JButton("delete word");
         deleteButton.addActionListener(new WordOptionListener());
-        //viewNoteBookButton.setBackground(new Color(220, 187, 102));
 
         wordOptionPanel.add(viewButton);
         wordOptionPanel.add(deleteButton);
@@ -112,15 +120,14 @@ public class VocabListWindow implements ListSelectionListener {
     //// set up the Navigation JPanel for main frame
     private void setupNavigationPanel() {
         navigationPanel = new JPanel();
-        //navigationPanel.setBackground(new Color(255, 255, 255));
         navigationPanel.setBounds(0, 400, 600, 80);
-        navigationPanel.setLayout(new GridLayout(1,3));
+        navigationPanel.setLayout(new GridLayout(1, 3));
         backButton = new JButton("Back");
         backButton.setBounds(0, 0, 200, 80);
         saveVocabListButton = new JButton("Save My Notebook");
-        saveVocabListButton.setPreferredSize(new Dimension(200,80));
+        saveVocabListButton.setPreferredSize(new Dimension(200, 80));
         loadVocabListButton = new JButton("Load My Notebook");
-        loadVocabListButton.setPreferredSize(new Dimension(200,80));
+        loadVocabListButton.setPreferredSize(new Dimension(200, 80));
         backButton.addActionListener(new NavigationListener());
         saveVocabListButton.addActionListener(new NavigationListener());
         loadVocabListButton.addActionListener(new NavigationListener());
@@ -153,32 +160,12 @@ public class VocabListWindow implements ListSelectionListener {
         }
     }
 
-//    private void setupBackButton() {
-//        backButton = new JButton("Back");
-//        backButton.setBounds(0, 400, 200, 100);
-//        backButton.addActionListener(new NavigationListener());
-//    }
-//
-//    @Override
-//    public void actionPerformed(ActionEvent e) {
-//        if (e.getSource() == backButton) {
-//            this.dispose();
-//            myFrame.setVisible(true);
-//            System.out.println("I did it");
-//        }
-//
-//    }
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting() == false) {
 
-            if (list.getSelectedIndex() == -1) {
-                deleteButton.setEnabled(false);
-
-            } else {
-                deleteButton.setEnabled(true);
-            }
+            deleteButton.setEnabled(list.getSelectedIndex() != -1);
         }
     }
     //https://docs.oracle.com/javase/tutorial/uiswing/examples/zipfiles/components-ListDemoProject.zip
@@ -195,7 +182,7 @@ public class VocabListWindow implements ListSelectionListener {
                 saveVocabList();
             } else if (e.getSource() == loadVocabListButton) {
                 loadVocabList();
-                saveVocabList();
+
             }
 
         }
@@ -206,15 +193,15 @@ public class VocabListWindow implements ListSelectionListener {
         public void actionPerformed(ActionEvent e) {
             int index = list.getSelectedIndex();
             if (e.getSource() == viewButton) {
-                System.out.println("viewing");
 
                 new WordViewingWindow(myVocabList.findWordByIndex(index));
 
-            } else if (e.getSource() == deleteButton) {
-                System.out.println("will delete");
 
+
+            } else if (e.getSource() == deleteButton) {
                 listModel.remove(index);
                 myVocabList.deleteWordByIndex(index);
+                checkEmptyList();
 
                 int size = listModel.getSize();
 

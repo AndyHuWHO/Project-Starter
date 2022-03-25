@@ -38,8 +38,6 @@ public class NotebookWindow implements ActionListener {
         setupMainNavigationPanel();
         setupMainTextField();
         addComponentsToFrame();
-        //this.addComponentsToPanel();
-        //mainFrame.add(navigationPanel);
         mainFrame.setVisible(true);
         myVocabList = new VocabList();
         jsonWriter = new JsonWriter(JSON_STORE);
@@ -53,8 +51,9 @@ public class NotebookWindow implements ActionListener {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(600, 500);
         mainFrame.setLayout(null);
-        //mainFrame.setResizable(false);
+        mainFrame.setResizable(false);
         mainFrame.getContentPane().setBackground(new Color(195, 243, 241));
+
     }
 
 
@@ -77,7 +76,6 @@ public class NotebookWindow implements ActionListener {
     //// set up the Navigation JPanel for main frame
     private void setupMainNavigationPanel() {
         navigationPanel = new JPanel();
-        //navigationPanel.setBackground(new Color(255, 255, 255));
         navigationPanel.setBounds(0, 400, 600, 80);
         navigationPanel.setLayout(new GridLayout(1,3));
         viewNoteBookButton = new JButton("View My Notebook");
@@ -102,7 +100,6 @@ public class NotebookWindow implements ActionListener {
         addWordButton = new JButton("Create Word Entry");
         addWordButton.setBounds(300, 180, 150, 30);
         addWordButton.addActionListener(this);
-        //addWordButton.setBorder(BorderFactory.createEtchedBorder());
     }
 
     //// set up the Navigation JPanel for main frame
