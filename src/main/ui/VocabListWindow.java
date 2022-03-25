@@ -57,14 +57,18 @@ public class VocabListWindow implements ListSelectionListener {
 
 
 
+
     }
 
     //disable view and delete buttons if index is < 0
     private void checkEmptyList() {
         int size = listModel.getSize();
-        if (size == 0) {
+        if (size <= 0) {
             viewButton.setEnabled(false);
             deleteButton.setEnabled(false);
+        } else {
+            viewButton.setEnabled(true);
+            deleteButton.setEnabled(true);
         }
 
     }
@@ -85,7 +89,7 @@ public class VocabListWindow implements ListSelectionListener {
     //set up the Scroll pane for VocabList
     private void setupScrollPane() {
         listModel = new DefaultListModel();
-        renderVocabListToListModel();
+        renderVocabListToListModel(listModel);
         list = new JList(listModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setSelectedIndex(0);
@@ -95,7 +99,7 @@ public class VocabListWindow implements ListSelectionListener {
     }
 
     //put the names of the words in current vocab list to listModel
-    private void renderVocabListToListModel() {
+    private void renderVocabListToListModel(DefaultListModel listModel) {
         for (Word w : myVocabList.getVocabList()) {
             listModel.addElement(w.getName());
 
@@ -149,11 +153,16 @@ public class VocabListWindow implements ListSelectionListener {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads workroom from file
+    // EFFECTS: loads VocabList from file
     private void loadVocabList() {
         try {
             this.myVocabList = jsonReader.read();
 
+            renderVocabListToListModel(listModel);
+            list.setModel(listModel);
+            vocabListScrollPane.repaint();
+
+            checkEmptyList();
             System.out.println("Your Vocabulary List is LOADED from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
@@ -177,7 +186,6 @@ public class VocabListWindow implements ListSelectionListener {
             if (e.getSource() == backButton) {
                 vocabListFrame.dispose();
                 myFrame.setVisible(true);
-                System.out.println("I did it");
             } else if (e.getSource() == saveVocabListButton) {
                 saveVocabList();
             } else if (e.getSource() == loadVocabListButton) {

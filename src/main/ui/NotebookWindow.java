@@ -16,6 +16,7 @@ import java.io.IOException;
 public class NotebookWindow implements ActionListener {
     private static final String JSON_STORE = "./data/testGUIVocabList.json";
 
+
     private JPanel navigationPanel;
     private JTextField wordTextField;
     private JButton addWordButton;

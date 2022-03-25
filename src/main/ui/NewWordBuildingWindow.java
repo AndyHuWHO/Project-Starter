@@ -14,6 +14,7 @@ public class NewWordBuildingWindow implements ActionListener {
     VocabList myVocabList;
     JFrame wordBuildingFrame;
     JPanel centerPanel;
+    private JLabel wordLabel;
     JTextArea definitionArea;
     JTextArea learningContextArea;
     JPanel saveCancelPanel;
@@ -43,31 +44,42 @@ public class NewWordBuildingWindow implements ActionListener {
 
     //// set up the center JPanel for this class
     private void setupCenterPanel() {
-        definitionArea = new JTextArea(newWord.getDefinition(),5,20);
-        //definitionField.setPreferredSize(new Dimension(350, 100));
-        definitionArea.setBounds(50, 100, 350, 100);
-        learningContextArea = new JTextArea(newWord.getLearningContext(),5,20);
-        //learningContextField.setPreferredSize(new Dimension(350, 100));
-        learningContextArea.setBounds(50, 250, 350, 100);
+        definitionArea = new JTextArea(newWord.getDefinition(), 5, 20);
+        definitionArea.setBounds(50, 150, 350, 100);
+        learningContextArea = new JTextArea(newWord.getLearningContext(), 5, 20);
+        learningContextArea.setBounds(50, 270, 350, 100);
+
+        wordLabel = new JLabel("Enter information for \"" + newWord.getName() + "\" below:");
+        wordLabel.setForeground(new Color(250, 24, 77));
+        wordLabel.setFont(new Font("MP", Font.BOLD, 20));
+        wordLabel.setBounds(50, 110, 550, 30);
 
         centerPanel = new JPanel();
-        //navigationPanel.setBackground(new Color(255, 255, 255));
-        centerPanel.setPreferredSize(new Dimension(600,400));
+        centerPanel.setPreferredSize(new Dimension(600, 400));
         centerPanel.setLayout(null);
         centerPanel.setBackground(new Color(195, 243, 241));
         centerPanel.add(definitionArea);
         centerPanel.add(learningContextArea);
+        centerPanel.add(wordLabel);
 
-        wordBuildingFrame.add(centerPanel,BorderLayout.CENTER);
-
+        wordBuildingFrame.add(centerPanel, BorderLayout.CENTER);
 
     }
+
+
+//    //set up a JLabel for the name of the word
+//    private void setupWordLabel() {
+////        wordLabel = new JLabel("Please enter information for \"" + newWord.getName() + "\" below:");
+////        wordLabel.setForeground(new Color(250, 24, 77));
+////        wordLabel.setFont(new Font("MP", Font.BOLD, 25));
+////        wordBuildingFrame.add(wordLabel, BorderLayout.NORTH);
+//    }
 
     //// set up the Navigation JPanel for main frame
     private void setupNavigationPanel() {
         saveCancelPanel = new JPanel();
         //navigationPanel.setBackground(new Color(255, 255, 255));
-        saveCancelPanel.setPreferredSize(new Dimension(600,100));
+        saveCancelPanel.setPreferredSize(new Dimension(600, 100));
         saveCancelPanel.setLayout(new GridLayout());
         saveButton = new JButton("Save");
         saveButton.setBounds(0, 0, 200, 80);
@@ -76,7 +88,7 @@ public class NewWordBuildingWindow implements ActionListener {
         saveButton.addActionListener(this);
         saveCancelPanel.add(cancelButton);
         cancelButton.addActionListener(this);
-        wordBuildingFrame.add(saveCancelPanel,BorderLayout.SOUTH);
+        wordBuildingFrame.add(saveCancelPanel, BorderLayout.SOUTH);
     }
 
 

@@ -28,17 +28,9 @@ public class WordViewingWindow implements ActionListener {
         setupWordBuildingFrame();
         setupNavigationPanel();
         setupCenterPanel();
-        setupWordLabel();
 
     }
 
-    //set up a JLabel for the name of the word
-    private void setupWordLabel() {
-        wordLabel = new JLabel("Word: " + wordBeingViewed.getName());
-        wordLabel.setForeground(new Color(250, 24, 77));
-        wordLabel.setFont(new Font("MP", Font.BOLD, 25));
-        wordViewingFrame.add(wordLabel, BorderLayout.NORTH);
-    }
 
 
     //set up the frame for this class
@@ -55,11 +47,16 @@ public class WordViewingWindow implements ActionListener {
     //// set up the Navigation JPanel for main frame
     private void setupCenterPanel() {
         definitionTextArea = new JTextArea(wordBeingViewed.getDefinition(), 5, 20);
-        //definitionField.setPreferredSize(new Dimension(350, 100));
-        definitionTextArea.setBounds(50, 100, 350, 100);
+        definitionTextArea.setBounds(50, 150, 350, 100);
         learningContextTextArea = new JTextArea(wordBeingViewed.getLearningContext(), 5, 20);
-        //learningContextField.setPreferredSize(new Dimension(350, 100));
-        learningContextTextArea.setBounds(50, 250, 350, 100);
+        learningContextTextArea.setBounds(50, 270, 350, 100);
+
+
+        wordLabel = new JLabel(wordBeingViewed.getName());
+        wordLabel.setForeground(new Color(250, 24, 77));
+        wordLabel.setFont(new Font("MP", Font.BOLD, 20));
+        wordLabel.setBounds(50, 110, 150, 30);
+
 
         centerPanel = new JPanel();
         //navigationPanel.setBackground(new Color(255, 255, 255));
@@ -68,6 +65,7 @@ public class WordViewingWindow implements ActionListener {
         centerPanel.setBackground(new Color(195, 243, 241));
         centerPanel.add(definitionTextArea);
         centerPanel.add(learningContextTextArea);
+        centerPanel.add(wordLabel);
 
         wordViewingFrame.add(centerPanel, BorderLayout.CENTER);
 
