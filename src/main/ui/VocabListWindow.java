@@ -2,6 +2,8 @@ package ui;
 
 import model.VocabList;
 import model.Word;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -9,8 +11,15 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class VocabListWindow implements ListSelectionListener {
+    private static final String JSON_STORE = "./data/testGUIVocabList.json";
+    private final JsonWriter jsonWriter;
+    private final JsonReader jsonReader;
+
+
     private JScrollPane vocabListScrollPane;
     private JFrame vocabListFrame;
     private JList list;
@@ -18,6 +27,9 @@ public class VocabListWindow implements ListSelectionListener {
     private JPanel navigationPanel;
     private JPanel wordOptionPanel;
     private JButton backButton;
+    private JButton saveVocabListButton;
+    private JButton loadVocabListButton;
+
     private JButton viewButton;
     private JButton deleteButton;
     private final JFrame myFrame;
@@ -25,6 +37,9 @@ public class VocabListWindow implements ListSelectionListener {
 
 
     public VocabListWindow(NotebookWindow notebookWindow) {
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+
         this.myFrame = notebookWindow.mainFrame;
         this.myVocabList = notebookWindow.myVocabList;
         setupFrame();
@@ -54,7 +69,7 @@ public class VocabListWindow implements ListSelectionListener {
     private void setupScrollPane() {
         listModel = new DefaultListModel();
         //listModel.addElement("try");
-        renderScrollPane();
+        renderVocablistToListModel();
         list = new JList(listModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setSelectedIndex(0);
@@ -65,7 +80,7 @@ public class VocabListWindow implements ListSelectionListener {
         //vocabListScrollPane.setOpaque(true);
     }
 
-    private void renderScrollPane() {
+    private void renderVocablistToListModel() {
         for (Word w: myVocabList.getVocabList()) {
             listModel.addElement(w.getName());
 
@@ -94,12 +109,43 @@ public class VocabListWindow implements ListSelectionListener {
         navigationPanel = new JPanel();
         //navigationPanel.setBackground(new Color(255, 255, 255));
         navigationPanel.setBounds(0, 400, 600, 80);
-        navigationPanel.setLayout(null);
+        navigationPanel.setLayout(new GridLayout(1,3));
         backButton = new JButton("Back");
         backButton.setBounds(0, 0, 200, 80);
-        //viewNoteBookButton.setBackground(new Color(220, 187, 102));
+        saveVocabListButton = new JButton("Save My Notebook");
+        saveVocabListButton.setPreferredSize(new Dimension(200,80));
+        loadVocabListButton = new JButton("Load My Notebook");
+        loadVocabListButton.setPreferredSize(new Dimension(200,80));
         backButton.addActionListener(new NavigationListener());
+        saveVocabListButton.addActionListener(new NavigationListener());
+        loadVocabListButton.addActionListener(new NavigationListener());
         navigationPanel.add(backButton);
+        navigationPanel.add(saveVocabListButton);
+        navigationPanel.add(loadVocabListButton);
+    }
+
+    // EFFECTS: saves the workroom to file
+    private void saveVocabList() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(myVocabList);
+            jsonWriter.close();
+            System.out.println("Your Vocabulary List is SAVED to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads workroom from file
+    private void loadVocabList() {
+        try {
+            this.myVocabList = jsonReader.read();
+
+            System.out.println("Your Vocabulary List is LOADED from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
     }
 
 //    private void setupBackButton() {
@@ -123,15 +169,15 @@ public class VocabListWindow implements ListSelectionListener {
         if (e.getValueIsAdjusting() == false) {
 
             if (list.getSelectedIndex() == -1) {
-                //No selection, disable fire button.
                 deleteButton.setEnabled(false);
 
             } else {
-                //Selection, enable the fire button.
                 deleteButton.setEnabled(true);
             }
         }
     }
+    //https://docs.oracle.com/javase/tutorial/uiswing/examples/zipfiles/components-ListDemoProject.zip
+    //Code from this method is learned from the file above
 
     private class NavigationListener implements ActionListener {
         @Override
@@ -140,6 +186,11 @@ public class VocabListWindow implements ListSelectionListener {
                 vocabListFrame.dispose();
                 myFrame.setVisible(true);
                 System.out.println("I did it");
+            } else if (e.getSource() == saveVocabListButton) {
+                saveVocabList();
+            } else if (e.getSource() == loadVocabListButton) {
+                loadVocabList();
+                saveVocabList();
             }
 
         }
@@ -151,27 +202,22 @@ public class VocabListWindow implements ListSelectionListener {
             int index = list.getSelectedIndex();
             if (e.getSource() == viewButton) {
                 System.out.println("viewing");
-                System.out.println(myVocabList.findWordByIndex(list.getSelectedIndex()).getName());
-                System.out.println(myVocabList.findWordByIndex(list.getSelectedIndex()).getDefinition());
-                System.out.println(myVocabList.findWordByIndex(list.getSelectedIndex()).getLearningContext());
 
                 new WordViewingWindow(myVocabList.findWordByIndex(index));
 
             } else if (e.getSource() == deleteButton) {
                 System.out.println("will delete");
 
-
-                //listModel.remove(index);
+                listModel.remove(index);
                 myVocabList.deleteWordByIndex(index);
 
                 int size = listModel.getSize();
 
-                if (size == 0) { //Nobody's left, disable firing.
+                if (size == 0) {
                     deleteButton.setEnabled(false);
 
-                } else { //Select an index.
+                } else {
                     if (index == listModel.getSize()) {
-                        //removed item in last position
                         index--;
                     }
 
@@ -181,4 +227,6 @@ public class VocabListWindow implements ListSelectionListener {
             }
         }
     }
+    //https://docs.oracle.com/javase/tutorial/uiswing/examples/zipfiles/components-ListDemoProject.zip
+    //Code from this method is learned from the file above
 }

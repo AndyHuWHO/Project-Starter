@@ -13,8 +13,8 @@ public class NewWordBuildingWindow implements ActionListener {
     VocabList myVocabList;
     JFrame wordBuildingFrame;
     JPanel centerPanel;
-    JTextField definitionField;
-    JTextField learningContextField;
+    JTextArea definitionArea;
+    JTextArea learningContextArea;
     JPanel saveCancelPanel;
     JButton saveButton;
     JButton cancelButton;
@@ -40,20 +40,20 @@ public class NewWordBuildingWindow implements ActionListener {
 
     //// set up the Navigation JPanel for main frame
     private void setupCenterPanel() {
-        definitionField = new JTextField("definition",20);
+        definitionArea = new JTextArea(newWord.getDefinition(),5,20);
         //definitionField.setPreferredSize(new Dimension(350, 100));
-        definitionField.setBounds(50, 100, 350, 100);
-        learningContextField = new JTextField(20);
+        definitionArea.setBounds(50, 100, 350, 100);
+        learningContextArea = new JTextArea(newWord.getLearningContext(),5,20);
         //learningContextField.setPreferredSize(new Dimension(350, 100));
-        learningContextField.setBounds(50, 250, 350, 100);
+        learningContextArea.setBounds(50, 250, 350, 100);
 
         centerPanel = new JPanel();
         //navigationPanel.setBackground(new Color(255, 255, 255));
         centerPanel.setPreferredSize(new Dimension(600,400));
         centerPanel.setLayout(null);
         centerPanel.setBackground(new Color(195, 243, 241));
-        centerPanel.add(definitionField);
-        centerPanel.add(learningContextField);
+        centerPanel.add(definitionArea);
+        centerPanel.add(learningContextArea);
 
         wordBuildingFrame.add(centerPanel,BorderLayout.CENTER);
 
@@ -80,8 +80,11 @@ public class NewWordBuildingWindow implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == saveButton) {
-            newWord.editDefinition(definitionField.getText());
-            newWord.editLearningContext(learningContextField.getText());
+            newWord.updateDefinition(definitionArea.getText());
+            newWord.updateLearningContext(learningContextArea.getText());
+            wordBuildingFrame.dispose();
+        } else if (e.getSource() == cancelButton) {
+            myVocabList.getVocabList().remove(newWord);
             wordBuildingFrame.dispose();
         }
 

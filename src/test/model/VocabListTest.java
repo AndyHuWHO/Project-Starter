@@ -52,7 +52,7 @@ public class VocabListTest {
     }
 
     @Test
-    void testDeleteWordByIndex() {
+    void testDeleteWordByStringIndex() {
         assertNull(testVocabList.deleteWordByIndex("one"));
         assertNull(testVocabList.deleteWordByIndex("1"));
         testVocabList.addWord(word1);
@@ -65,6 +65,32 @@ public class VocabListTest {
         assertNull(testVocabList.deleteWordByIndex("2"));
         assertEquals(word2, testVocabList.deleteWordByIndex("1"));
         assertTrue(testVocabList.isEmpty());
+    }
+
+    @Test
+    void testDeleteWordByIndex() {
+        try {testVocabList.deleteWordByIndex(1);
+            fail();
+        } catch (IndexOutOfBoundsException e) {
+            //expected
+        }
+
+        testVocabList.addWord(word1);
+        testVocabList.addWord(word2);
+        testVocabList.deleteWordByIndex(1);
+        assertEquals(1, testVocabList.getSize());
+        assertFalse(testVocabList.containsWord(word2));
+        assertTrue(testVocabList.containsWord(word1));
+        try {testVocabList.deleteWordByIndex(1);
+            fail();
+        } catch (IndexOutOfBoundsException e) {
+            //expected
+        }
+        try {testVocabList.deleteWordByIndex(0);
+            assertTrue(testVocabList.isEmpty());
+        } catch (IndexOutOfBoundsException e) {
+            fail();
+        }
     }
 
 

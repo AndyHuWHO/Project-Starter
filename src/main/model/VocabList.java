@@ -57,13 +57,7 @@ public class VocabList implements Writeable {
     //EFFECTS: remove a word by its index in the list + 1  from the vocab list if the word is in the list
     // and return the word, if there is no word of the given index in the list, return null
     public void deleteWordByIndex(int index) {
-        for (Word v : vocabList) {
-            if (vocabList.indexOf(v) == index) {
-                vocabList.remove(v);
-
-            }
-        }
-
+        vocabList.remove(index);
     }
 
 
@@ -91,7 +85,7 @@ public class VocabList implements Writeable {
     //EFFECTS: get a word by its index in the list + 1 from the vocab list
     public Word findWordByIndex(int index) {
         for (Word v : vocabList) {
-            if (vocabList.indexOf(v)  == (index)) {
+            if (vocabList.indexOf(v) == (index)) {
                 return v;
             }
         }
@@ -141,7 +135,7 @@ public class VocabList implements Writeable {
         json.put("words", wordsToJson());
         return json;
     }  //https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
-    //code used from the link above
+//code used from the link above
 
     // EFFECTS: returns words in this vocabList as a JSON array
     private JSONArray wordsToJson() {

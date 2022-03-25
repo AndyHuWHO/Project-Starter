@@ -8,16 +8,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class WordViewingWindow implements ActionListener {
-    private Word wordBeingViewed;
+    private final Word wordBeingViewed;
 
     private JFrame wordViewingFrame;
-    JPanel centerPanel;
-    JTextField definitionField;
-    JTextField learningContextField;
-    JPanel optionsPanel;
-    JButton updateButton;
-    JButton backButton;
-
+    private JPanel centerPanel;
+    private JTextArea definitionTextArea;
+    private JTextArea learningContextTextArea;
+    private JPanel optionsPanel;
+    private JLabel wordLabel;
+    private JButton updateButton;
+    private JButton backButton;
 
 
     public WordViewingWindow(Word word) {
@@ -26,9 +26,16 @@ public class WordViewingWindow implements ActionListener {
         setupWordBuildingFrame();
         setupNavigationPanel();
         setupCenterPanel();
+        setupWordLabel();
 
     }
 
+    private void setupWordLabel() {
+        wordLabel = new JLabel("Word: " + wordBeingViewed.getName());
+        wordLabel.setForeground(new Color(250, 24, 77));
+        wordLabel.setFont(new Font("MP", Font.BOLD, 25));
+        wordViewingFrame.add(wordLabel, BorderLayout.NORTH);
+    }
 
 
     private void setupWordBuildingFrame() {
@@ -43,22 +50,22 @@ public class WordViewingWindow implements ActionListener {
 
     //// set up the Navigation JPanel for main frame
     private void setupCenterPanel() {
-        definitionField = new JTextField(wordBeingViewed.getDefinition(),20);
+        definitionTextArea = new JTextArea(wordBeingViewed.getDefinition(), 5, 20);
         //definitionField.setPreferredSize(new Dimension(350, 100));
-        definitionField.setBounds(50, 100, 350, 100);
-        learningContextField = new JTextField(wordBeingViewed.getLearningContext(),20);
+        definitionTextArea.setBounds(50, 100, 350, 100);
+        learningContextTextArea = new JTextArea(wordBeingViewed.getLearningContext(), 5, 20);
         //learningContextField.setPreferredSize(new Dimension(350, 100));
-        learningContextField.setBounds(50, 250, 350, 100);
+        learningContextTextArea.setBounds(50, 250, 350, 100);
 
         centerPanel = new JPanel();
         //navigationPanel.setBackground(new Color(255, 255, 255));
-        centerPanel.setPreferredSize(new Dimension(600,400));
+        centerPanel.setPreferredSize(new Dimension(600, 400));
         centerPanel.setLayout(null);
         centerPanel.setBackground(new Color(195, 243, 241));
-        centerPanel.add(definitionField);
-        centerPanel.add(learningContextField);
+        centerPanel.add(definitionTextArea);
+        centerPanel.add(learningContextTextArea);
 
-        wordViewingFrame.add(centerPanel,BorderLayout.CENTER);
+        wordViewingFrame.add(centerPanel, BorderLayout.CENTER);
 
 
     }
@@ -67,7 +74,7 @@ public class WordViewingWindow implements ActionListener {
     private void setupNavigationPanel() {
         optionsPanel = new JPanel();
         //navigationPanel.setBackground(new Color(255, 255, 255));
-        optionsPanel.setPreferredSize(new Dimension(600,100));
+        optionsPanel.setPreferredSize(new Dimension(600, 100));
         optionsPanel.setLayout(new GridLayout());
         updateButton = new JButton("Update");
         updateButton.setBounds(0, 0, 200, 80);
@@ -76,15 +83,15 @@ public class WordViewingWindow implements ActionListener {
         updateButton.addActionListener(this);
         optionsPanel.add(backButton);
         backButton.addActionListener(this);
-        wordViewingFrame.add(optionsPanel,BorderLayout.SOUTH);
+        wordViewingFrame.add(optionsPanel, BorderLayout.SOUTH);
     }
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == updateButton) {
-            wordBeingViewed.updateDefinition(definitionField.getText());
-            wordBeingViewed.updateLearningContext(learningContextField.getText());
+            wordBeingViewed.updateDefinition(definitionTextArea.getText());
+            wordBeingViewed.updateLearningContext(learningContextTextArea.getText());
             wordViewingFrame.dispose();
         } else if (e.getSource() == backButton) {
             wordViewingFrame.dispose();

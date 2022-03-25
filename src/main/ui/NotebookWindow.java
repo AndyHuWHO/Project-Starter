@@ -9,20 +9,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class NotebookWindow implements ActionListener {
-    private static final String JSON_STORE = "./data/vocabList.json";
+    private static final String JSON_STORE = "./data/testGUIVocabList.json";
 
     private JPanel navigationPanel;
     private JTextField wordTextField;
     private JButton addWordButton;
     private JButton viewNoteBookButton;
+    private JButton saveVocabListButton;
+    private JButton loadVocabListButton;
     private JLabel mvpLabel;
     protected JFrame mainFrame;
 
     protected Word newWord;
-    private Word wordBeingEdited;
-    private Word wordBeingViewed;
     protected VocabList myVocabList;
 
     private final JsonWriter jsonWriter;
@@ -76,12 +78,19 @@ public class NotebookWindow implements ActionListener {
         navigationPanel = new JPanel();
         //navigationPanel.setBackground(new Color(255, 255, 255));
         navigationPanel.setBounds(0, 400, 600, 80);
-        navigationPanel.setLayout(null);
+        navigationPanel.setLayout(new GridLayout(1,3));
         viewNoteBookButton = new JButton("View My Notebook");
-        viewNoteBookButton.setBounds(0, 0, 200, 80);
-        //viewNoteBookButton.setBackground(new Color(220, 187, 102));
+        viewNoteBookButton.setPreferredSize(new Dimension(200,80));
+        saveVocabListButton = new JButton("Save My Notebook");
+        saveVocabListButton.setPreferredSize(new Dimension(200,80));
+        loadVocabListButton = new JButton("Load My Notebook");
+        loadVocabListButton.setPreferredSize(new Dimension(200,80));
         viewNoteBookButton.addActionListener(this);
+        saveVocabListButton.addActionListener(this);
+        loadVocabListButton.addActionListener(this);
         navigationPanel.add(viewNoteBookButton);
+        navigationPanel.add(saveVocabListButton);
+        navigationPanel.add(loadVocabListButton);
     }
 
     // set up the JTextField for main frame
@@ -112,6 +121,31 @@ public class NotebookWindow implements ActionListener {
     }
 
 
+
+    // EFFECTS: saves the workroom to file
+    private void saveVocabList() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(myVocabList);
+            jsonWriter.close();
+            System.out.println("Your Vocabulary List is SAVED to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads workroom from file
+    private void loadVocabList() {
+        try {
+            myVocabList = jsonReader.read();
+            System.out.println("Your Vocabulary List is LOADED from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addWordButton) {
@@ -124,6 +158,10 @@ public class NotebookWindow implements ActionListener {
         } else if (e.getSource() == viewNoteBookButton) {
             new VocabListWindow(this);
             mainFrame.setVisible(false);
+        } else if (e.getSource() == saveVocabListButton) {
+            saveVocabList();
+        } else if (e.getSource() == loadVocabListButton) {
+            loadVocabList();
         }
 
     }
