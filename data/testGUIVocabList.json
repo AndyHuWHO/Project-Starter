@@ -1,13 +1,13 @@
 {"words": [
     {
         "name": "one",
-        "definition": "Definition:",
-        "learning context": "Original Learning Context:"
+        "definition": "Definition: number one",
+        "learning context": "Original Learning Context: a test"
     },
     {
         "name": "two",
-        "definition": "Definition:",
-        "learning context": "Original Learning Context:"
+        "definition": "Definition: number two\nsecond line ",
+        "learning context": "Original Learning Context:\nIt's a number"
     },
     {
         "name": "three",
@@ -16,7 +16,7 @@
     },
     {
         "name": "four",
-        "definition": "Definition:",
-        "learning context": "Original Learning Context:"
+        "definition": "Definition: \nI want new information",
+        "learning context": "Original Learning Context: \nI like new information"
     }
 ]}

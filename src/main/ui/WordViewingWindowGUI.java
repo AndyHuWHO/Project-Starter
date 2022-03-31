@@ -8,23 +8,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 // Window for viewing a word entry in Notebook
-public class WordViewingWindow implements ActionListener {
+public class WordViewingWindowGUI implements ActionListener {
     private final Word wordBeingViewed;
 
     private JFrame wordViewingFrame;
+
     private JPanel centerPanel;
     private JTextArea definitionTextArea;
     private JTextArea learningContextTextArea;
+
     private JPanel optionsPanel;
-    private JLabel wordLabel;
     private JButton updateButton;
     private JButton backButton;
 
 
     //construct a word viewing window
-    public WordViewingWindow(Word word) {
+    public WordViewingWindowGUI(Word word) {
         this.wordBeingViewed = word;
-
         setupWordBuildingFrame();
         setupNavigationPanel();
         setupCenterPanel();
@@ -46,16 +46,20 @@ public class WordViewingWindow implements ActionListener {
 
     //// set up the Navigation JPanel for main frame
     private void setupCenterPanel() {
-        definitionTextArea = new JTextArea(wordBeingViewed.getDefinition(), 5, 20);
-        definitionTextArea.setBounds(50, 150, 350, 100);
-        learningContextTextArea = new JTextArea(wordBeingViewed.getLearningContext(), 5, 20);
-        learningContextTextArea.setBounds(50, 270, 350, 100);
+        definitionTextArea = new JTextArea(wordBeingViewed.getDefinition() + " \n", 5, 20);
+        definitionTextArea.setBounds(50, 100, 400, 100);
+        definitionTextArea.setLineWrap(true);
+        definitionTextArea.setWrapStyleWord(true);
+        learningContextTextArea = new JTextArea(wordBeingViewed.getLearningContext() + " \n", 5, 20);
+        learningContextTextArea.setBounds(50, 250, 400, 100);
+        learningContextTextArea.setLineWrap(true);
+        learningContextTextArea.setWrapStyleWord(true);
 
 
-        wordLabel = new JLabel(wordBeingViewed.getName());
+        JLabel wordLabel = new JLabel(wordBeingViewed.getName());
         wordLabel.setForeground(new Color(250, 24, 77));
         wordLabel.setFont(new Font("MP", Font.BOLD, 20));
-        wordLabel.setBounds(50, 110, 150, 30);
+        wordLabel.setBounds(50, 60, 350, 30);
 
 
         centerPanel = new JPanel();

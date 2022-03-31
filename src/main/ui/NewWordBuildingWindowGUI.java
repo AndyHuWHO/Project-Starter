@@ -9,12 +9,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 // Window for building new word to Notebook
-public class NewWordBuildingWindow implements ActionListener {
+public class NewWordBuildingWindowGUI implements ActionListener {
     Word newWord;
     VocabList myVocabList;
+
     JFrame wordBuildingFrame;
+
     JPanel centerPanel;
-    private JLabel wordLabel;
     JTextArea definitionArea;
     JTextArea learningContextArea;
     JPanel saveCancelPanel;
@@ -22,7 +23,7 @@ public class NewWordBuildingWindow implements ActionListener {
     JButton cancelButton;
 
     //construct a new word building window
-    public NewWordBuildingWindow(NotebookWindow notebookWindow) {
+    public NewWordBuildingWindowGUI(MainNotebookWindowGUI notebookWindow) {
         this.newWord = notebookWindow.newWord;
         this.myVocabList = notebookWindow.myVocabList;
         setupWordBuildingFrame();
@@ -35,7 +36,7 @@ public class NewWordBuildingWindow implements ActionListener {
     private void setupWordBuildingFrame() {
         wordBuildingFrame = new JFrame();
         wordBuildingFrame.setTitle("My Vocabulary Notebook");
-        wordBuildingFrame.setSize(600, 500);
+        wordBuildingFrame.setSize(600, 550);
         wordBuildingFrame.setLayout(new BorderLayout());
         wordBuildingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         wordBuildingFrame.getContentPane().setBackground(new Color(195, 243, 241));
@@ -44,12 +45,16 @@ public class NewWordBuildingWindow implements ActionListener {
 
     //// set up the center JPanel for this class
     private void setupCenterPanel() {
-        definitionArea = new JTextArea(newWord.getDefinition(), 5, 20);
-        definitionArea.setBounds(50, 150, 350, 100);
-        learningContextArea = new JTextArea(newWord.getLearningContext(), 5, 20);
-        learningContextArea.setBounds(50, 270, 350, 100);
+        definitionArea = new JTextArea(newWord.getDefinition() + " \n", 5, 20);
+        definitionArea.setBounds(50, 150, 400, 100);
+        definitionArea.setLineWrap(true);
+        definitionArea.setWrapStyleWord(true);
+        learningContextArea = new JTextArea(newWord.getLearningContext() + " \n", 5, 20);
+        learningContextArea.setBounds(50, 300, 400, 100);
+        learningContextArea.setLineWrap(true);
+        learningContextArea.setWrapStyleWord(true);
 
-        wordLabel = new JLabel("Enter information for \"" + newWord.getName() + "\" below:");
+        JLabel wordLabel = new JLabel("Enter information for \"" + newWord.getName() + "\" below:");
         wordLabel.setForeground(new Color(250, 24, 77));
         wordLabel.setFont(new Font("MP", Font.BOLD, 20));
         wordLabel.setBounds(50, 110, 550, 30);
@@ -67,13 +72,6 @@ public class NewWordBuildingWindow implements ActionListener {
     }
 
 
-//    //set up a JLabel for the name of the word
-//    private void setupWordLabel() {
-////        wordLabel = new JLabel("Please enter information for \"" + newWord.getName() + "\" below:");
-////        wordLabel.setForeground(new Color(250, 24, 77));
-////        wordLabel.setFont(new Font("MP", Font.BOLD, 25));
-////        wordBuildingFrame.add(wordLabel, BorderLayout.NORTH);
-//    }
 
     //// set up the Navigation JPanel for main frame
     private void setupNavigationPanel() {

@@ -15,32 +15,33 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 // Window for view Vocabulary List in Notebook
-public class VocabListWindow implements ListSelectionListener {
-    private static final String JSON_STORE = "./data/testGUIVocabList.json";
+public class VocabListWindowGUI implements ListSelectionListener {
+    private static final String JSON_STORE = "./data/vocabList.json";
     private final JsonWriter jsonWriter;
     private final JsonReader jsonReader;
 
+    private MainNotebookWindowGUI notebookWindow;
+    private final JFrame myFrame;
+    private VocabList myVocabList;
 
+    private JFrame vocabListFrame;
+
+    private JPanel navigationPanel;
+    private JButton saveVocabListButton;
+    private JButton loadVocabListButton;
+    private JButton backButton;
+
+    private JPanel centerPanel;
+    private JPanel wordOptionPanel;
+    private JButton viewButton;
+    private JButton deleteButton;
     private JScrollPane vocabListScrollPane;
     private JList list;
     private DefaultListModel listModel;
 
-    private JFrame vocabListFrame;
-    private JPanel navigationPanel;
-    private JPanel wordOptionPanel;
-    private JButton backButton;
-    private JButton saveVocabListButton;
-    private JButton loadVocabListButton;
-    private JButton viewButton;
-    private JButton deleteButton;
-    private NotebookWindow notebookWindow;
-
-    private final JFrame myFrame;
-    private VocabList myVocabList;
-
 
     //construct a new Vocabulary list viewing window
-    public VocabListWindow(NotebookWindow notebookWindow) {
+    public VocabListWindowGUI(MainNotebookWindowGUI notebookWindow) {
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
 
@@ -50,21 +51,18 @@ public class VocabListWindow implements ListSelectionListener {
 
         setupFrame();
         setupScrollPane();
-        vocabListFrame.add(vocabListScrollPane);
         setupWordOptionPanel();
+        setupCenterPanel();
+        vocabListFrame.add(centerPanel,BorderLayout.CENTER);
         checkEmptyList();
-        vocabListFrame.add(wordOptionPanel);
         setupNavigationPanel();
-        vocabListFrame.add(navigationPanel);
-
-
-
-
+        vocabListFrame.add(navigationPanel,BorderLayout.SOUTH);
     }
 
     //disable view and delete buttons if index is < 0
     private void checkEmptyList() {
         int size = listModel.getSize();
+        //int index = list.getSelectedIndex();
         if (size <= 0) {
             viewButton.setEnabled(false);
             deleteButton.setEnabled(false);
@@ -72,7 +70,6 @@ public class VocabListWindow implements ListSelectionListener {
             viewButton.setEnabled(true);
             deleteButton.setEnabled(true);
         }
-
     }
 
 
@@ -80,8 +77,8 @@ public class VocabListWindow implements ListSelectionListener {
     private void setupFrame() {
         vocabListFrame = new JFrame();
         vocabListFrame.setTitle("My Vocabulary Notebook");
-        vocabListFrame.setSize(600, 500);
-        vocabListFrame.setLayout(null);
+        vocabListFrame.setSize(800, 600);
+        vocabListFrame.setLayout(new BorderLayout());
         vocabListFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         vocabListFrame.getContentPane().setBackground(new Color(195, 243, 241));
         vocabListFrame.setVisible(true);
@@ -95,16 +92,18 @@ public class VocabListWindow implements ListSelectionListener {
         list = new JList(listModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setSelectedIndex(0);
-        list.setVisibleRowCount(5);
+        //list.setVisibleRowCount(5);
         vocabListScrollPane = new JScrollPane(list);
-        vocabListScrollPane.setBounds(50, 50, 300, 300);
+        vocabListScrollPane.setBounds(100, 50, 300, 400);
+        vocabListScrollPane.setName("My Vocabulary Notebook");
+        vocabListScrollPane.setFont(new java.awt.Font("SansSerif", 0, 50));
     }
 
     //put the names of the words in current vocab list to listModel
     private void renderVocabListToListModel(DefaultListModel listModel) {
         listModel.removeAllElements();
         for (Word w : myVocabList.getVocabList()) {
-            listModel.addElement(w.getName());
+            listModel.addElement((myVocabList.getVocabList().indexOf(w) + 1) + ". " + w.getName());
 
         }
     }
@@ -112,12 +111,14 @@ public class VocabListWindow implements ListSelectionListener {
     //// set up the Option JPanel for main frame
     private void setupWordOptionPanel() {
         wordOptionPanel = new JPanel();
-        wordOptionPanel.setBounds(350, 50, 100, 200);
+        wordOptionPanel.setBounds(400, 50, 100, 200);
         wordOptionPanel.setLayout(new GridLayout(2, 1));
         viewButton = new JButton("view word");
         viewButton.addActionListener(new WordOptionListener());
         deleteButton = new JButton("delete word");
         deleteButton.addActionListener(new WordOptionListener());
+        notebookWindow.setNavigationButtonsColor(viewButton);
+        notebookWindow.setNavigationButtonsColor(deleteButton);
 
         wordOptionPanel.add(viewButton);
         wordOptionPanel.add(deleteButton);
@@ -138,10 +139,28 @@ public class VocabListWindow implements ListSelectionListener {
         backButton.addActionListener(new NavigationListener());
         saveVocabListButton.addActionListener(new NavigationListener());
         loadVocabListButton.addActionListener(new NavigationListener());
+        notebookWindow.setNavigationButtonsColor(backButton);
+        notebookWindow.setNavigationButtonsColor(saveVocabListButton);
+        notebookWindow.setNavigationButtonsColor(loadVocabListButton);
         navigationPanel.add(backButton);
         navigationPanel.add(saveVocabListButton);
         navigationPanel.add(loadVocabListButton);
     }
+
+
+    //// set up the center JPanel for this class
+    private void setupCenterPanel() {
+        centerPanel = new JPanel();
+        centerPanel.setPreferredSize(new Dimension(600, 400));
+        centerPanel.setLayout(null);
+        centerPanel.setBackground(new Color(195, 243, 241));
+        centerPanel.add(vocabListScrollPane);
+        centerPanel.add(wordOptionPanel);
+
+    }
+
+
+
 
     // EFFECTS: saves the workroom to file
     private void saveVocabList() {
@@ -174,7 +193,11 @@ public class VocabListWindow implements ListSelectionListener {
         if (e.getValueIsAdjusting() == false) {
 
             deleteButton.setEnabled(list.getSelectedIndex() != -1);
+//          viewButton.setEnabled(list.getSelectedIndex() != -1);
         }
+        //else {
+        //    viewButton.setEnabled(list.getSelectedIndex() != -1);
+        //}
     }
     //https://docs.oracle.com/javase/tutorial/uiswing/examples/zipfiles/components-ListDemoProject.zip
     //Code from this method is learned from the file above
@@ -206,7 +229,7 @@ public class VocabListWindow implements ListSelectionListener {
             int index = list.getSelectedIndex();
             if (e.getSource() == viewButton) {
 
-                new WordViewingWindow(myVocabList.findWordByIndex(index));
+                new WordViewingWindowGUI(myVocabList.findWordByIndex(index));
 
 
 
