@@ -1,5 +1,7 @@
 package ui;
 
+import model.Event;
+import model.EventLog;
 import model.VocabList;
 import model.Word;
 import persistence.JsonReader;
@@ -7,15 +9,16 @@ import persistence.JsonWriter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+
 // Opening Window for the Notebook, new word can be created
-public class MainNotebookWindowGUI implements ActionListener {
+public class MainNotebookWindowGUI extends WindowAdapter implements ActionListener {
     private static final String JSON_STORE = "./data/vocabList.json";
     private static final  String JSON_BACKUP = "./data/vocabListBackupMar29.json";
+    private static final  String JSON_TEST = "./data/testGUIVocabList.json";
     private final JsonWriter jsonWriter;
     private final JsonReader jsonReader;
 
@@ -37,6 +40,10 @@ public class MainNotebookWindowGUI implements ActionListener {
 
 
 
+
+
+
+
     // constructs the Notebook window
     public MainNotebookWindowGUI() {
         setupMainFrame();
@@ -49,18 +56,19 @@ public class MainNotebookWindowGUI implements ActionListener {
         mainFrame.add(mainPanel,BorderLayout.CENTER);
         mainFrame.setVisible(true);
         myVocabList = new VocabList();
-        jsonWriter = new JsonWriter(JSON_STORE);
-        jsonReader = new JsonReader(JSON_STORE);
+        jsonWriter = new JsonWriter(JSON_TEST);
+        jsonReader = new JsonReader(JSON_TEST);
     }
 
     // set up the JFrame for main frame
     private void setupMainFrame() {
         mainFrame = new JFrame();
         mainFrame.setTitle("My Vocabulary Notebook");
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         mainFrame.setSize(800, 600);
         mainFrame.setLayout(new BorderLayout());
         mainFrame.getContentPane().setBackground(new Color(195, 243, 241));
+        mainFrame.addWindowListener(this);
 
     }
 
@@ -78,6 +86,7 @@ public class MainNotebookWindowGUI implements ActionListener {
         mainPanel.setPreferredSize(new Dimension(800, 500));
         mainPanel.setLayout(null);
         mainPanel.setBackground(new Color(195, 243, 241));
+
         mainPanel.add(mvpLabel);
         mainPanel.add(wordTextField);
         mainPanel.add(addWordButton);
@@ -113,7 +122,7 @@ public class MainNotebookWindowGUI implements ActionListener {
         //descriptionLabel.setHorizontalTextPosition(JLabel.CENTER);
         //descriptionLabel.setVerticalTextPosition(JLabel.BOTTOM);
         descriptionLabel.setForeground(new Color(250, 24, 77));
-        descriptionLabel.setFont(new Font("MVP", Font.ROMAN_BASELINE, 15));
+        descriptionLabel.setFont(new Font("MVP", Font.PLAIN, 15));
     }
 
     //// set up the Navigation JPanel for main frame
@@ -148,13 +157,6 @@ public class MainNotebookWindowGUI implements ActionListener {
         addWordButton.addActionListener(this);
     }
 
-    //// set up the Navigation JPanel for main frame
-    private void addComponentsToFrame() {
-        mainFrame.add(mvpLabel);
-        mainFrame.add(wordTextField);
-        mainFrame.add(addWordButton);
-        mainFrame.add(navigationPanel);
-    }
 
 
     // EFFECTS: saves the workroom to file
@@ -181,6 +183,25 @@ public class MainNotebookWindowGUI implements ActionListener {
     }
 
 
+
+
+
+    public String printLog(EventLog el) {
+        String logText = "";
+        for (Event event: el) {
+            logText = logText + event.toString() + "\n\n";
+        }
+        return logText;
+
+    }
+
+
+
+
+
+
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addWordButton) {
@@ -192,7 +213,6 @@ public class MainNotebookWindowGUI implements ActionListener {
                 wordTextField.setText("");
                 new NewWordBuildingWindowGUI(this);
 
-                System.out.println(wordTextField.getText() + " was added to myVocabList");
             }
         } else if (e.getSource() == viewNoteBookButton) {
             new VocabListWindowGUI(this);
@@ -205,6 +225,63 @@ public class MainNotebookWindowGUI implements ActionListener {
         }
 
     }
+
+
+
+
+
+
+
+
+
+//    // MODIFIES: this
+//    // EFFECTS: listener for the exit program button
+//    private void setOnClosePopUpMsg() {
+//        mainFrame.addWindowListener(new WindowAdapter() {
+//            public void windowClosing(WindowEvent e) {
+//                closeApplication();
+//
+//            }
+//        });
+//    }
+
+
+
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        closeApplication();
+
+    }
+
+    // MODIFIES: this
+    // EFFECTS: display the confirmation dialog of quitting the program
+    private void closeApplication() {
+        String[] responses = {"Save and Quit", "No"};
+
+        int confirmed = JOptionPane.showOptionDialog(mainFrame,
+                "SAVE your current Vocabulary list with "
+                        + myVocabList.getSize() + " words in it?",
+                "", JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                null,
+                1);
+
+        if (confirmed == 0) {
+            saveVocabList();
+            System.out.println(printLog(EventLog.getInstance()));
+            System.exit(0);
+        } else if (confirmed == 1) {
+            System.out.println(printLog(EventLog.getInstance()));
+            System.exit(0);
+        }
+
+    }
+
+
+
+
 
 
 }

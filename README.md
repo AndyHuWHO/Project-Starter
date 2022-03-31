@@ -56,4 +56,29 @@ while running my program and before terminating the app
 my vocab list from file when I start the app and 
 while running my program
 
+### Phase 4: Task 2
+Thu Mar 31 11:13:25 PDT 2022
+Added word: test1
+
+Thu Mar 31 11:13:30 PDT 2022
+Added word: test2
+
+Thu Mar 31 11:13:34 PDT 2022
+Added word: test3
+
+Thu Mar 31 11:13:38 PDT 2022
+Deleted word: test3
+
+Thu Mar 31 11:13:40 PDT 2022
+Deleted word: test2
+
+Thu Mar 31 11:13:47 PDT 2022
+Added word: test4
+
+Thu Mar 31 11:13:54 PDT 2022
+Added word: test5
+
+Thu Mar 31 11:13:59 PDT 2022
+Deleted word: test1
+
 
