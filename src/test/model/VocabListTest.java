@@ -71,7 +71,7 @@ public class VocabListTest {
     void testDeleteWordByIndex() {
         try {testVocabList.deleteWordByIndex(1);
             fail();
-        } catch (IndexOutOfBoundsException e) {
+        } catch (NullPointerException e) {
             //expected
         }
 
@@ -83,12 +83,12 @@ public class VocabListTest {
         assertTrue(testVocabList.containsWord(word1));
         try {testVocabList.deleteWordByIndex(1);
             fail();
-        } catch (IndexOutOfBoundsException e) {
+        } catch (NullPointerException e) {
             //expected
         }
         try {testVocabList.deleteWordByIndex(0);
             assertTrue(testVocabList.isEmpty());
-        } catch (IndexOutOfBoundsException e) {
+        } catch (NullPointerException e) {
             fail();
         }
     }

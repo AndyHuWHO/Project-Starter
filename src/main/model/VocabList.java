@@ -58,7 +58,8 @@ public class VocabList implements Writeable {
     //EFFECTS: remove a word by its index in the list + 1  from the vocab list if the word is in the list
     // and return the word, if there is no word of the given index in the list, return null
     public void deleteWordByIndex(int index) {
-        EventLog.getInstance().logEvent(new Event("Deleted word: " + this.findWordByIndex(index).getName()));
+        EventLog.getInstance().logEvent(new Event("Deleted word: "
+                + this.findWordByIndex(index).getName()));
         vocabList.remove(index);
 
     }

@@ -39,11 +39,6 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
     private JButton loadVocabListButton;
 
 
-
-
-
-
-
     // constructs the Notebook window
     public MainNotebookWindowGUI() {
         setupMainFrame();
@@ -72,6 +67,7 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
 
     }
 
+    //navigation buttons specification
     public void setNavigationButtonsColor(JButton button) {
         //button.setBackground(new Color(245, 222, 77));
         button.setForeground(new Color(36, 36, 37));
@@ -81,6 +77,7 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
 
 
 
+    //set up the main center panel
     private void setupMainPanel() {
         mainPanel = new JPanel();
         mainPanel.setPreferredSize(new Dimension(800, 500));
@@ -226,28 +223,6 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
 
     }
 
-
-
-
-
-
-
-
-
-//    // MODIFIES: this
-//    // EFFECTS: listener for the exit program button
-//    private void setOnClosePopUpMsg() {
-//        mainFrame.addWindowListener(new WindowAdapter() {
-//            public void windowClosing(WindowEvent e) {
-//                closeApplication();
-//
-//            }
-//        });
-//    }
-
-
-
-
     @Override
     public void windowClosing(WindowEvent e) {
         closeApplication();
@@ -265,7 +240,7 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
                 "", JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
-                null,
+                responses,
                 1);
 
         if (confirmed == 0) {
