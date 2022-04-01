@@ -1,5 +1,6 @@
 package ui;
 
+import model.EventLog;
 import model.VocabList;
 import model.Word;
 import persistence.JsonReader;
@@ -11,17 +12,21 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 // Window for view Vocabulary List in Notebook
-public class VocabListWindowGUI implements ListSelectionListener {
+public class VocabListWindowGUI extends WindowAdapter implements ListSelectionListener {
     private static final String JSON_STORE = "./data/vocabList.json";
+    private static final  String JSON_BACKUP = "./data/vocabListBackupMar29.json";
+    private static final  String JSON_TEST = "./data/testGUIVocabList.json";
     private final JsonWriter jsonWriter;
     private final JsonReader jsonReader;
 
     private final JFrame myFrame;
-    private MainNotebookWindowGUI notebookWindow;
+    private MainNotebookWindowGUI mainNotebookWindow;
     private VocabList myVocabList;
 
     private JFrame vocabListFrame;
@@ -42,11 +47,11 @@ public class VocabListWindowGUI implements ListSelectionListener {
 
     //construct a new Vocabulary list viewing window
     public VocabListWindowGUI(MainNotebookWindowGUI notebookWindow) {
-        jsonWriter = new JsonWriter(JSON_STORE);
-        jsonReader = new JsonReader(JSON_STORE);
+        jsonWriter = new JsonWriter(JSON_TEST);
+        jsonReader = new JsonReader(JSON_TEST);
 
         this.myFrame = notebookWindow.mainFrame;
-        this.notebookWindow = notebookWindow;
+        this.mainNotebookWindow = notebookWindow;
         this.myVocabList = notebookWindow.myVocabList;
 
         setupFrame();
@@ -56,6 +61,9 @@ public class VocabListWindowGUI implements ListSelectionListener {
         vocabListFrame.add(centerPanel,BorderLayout.CENTER);
         checkEmptyList();
         setupNavigationPanel();
+        if (!mainNotebookWindow.loadVocabListButton.isEnabled()) {
+            loadVocabListButton.setEnabled(false);
+        }
         vocabListFrame.add(navigationPanel,BorderLayout.SOUTH);
     }
 
@@ -79,9 +87,10 @@ public class VocabListWindowGUI implements ListSelectionListener {
         vocabListFrame.setTitle("My Vocabulary Notebook");
         vocabListFrame.setSize(800, 600);
         vocabListFrame.setLayout(new BorderLayout());
-        vocabListFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        vocabListFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         vocabListFrame.getContentPane().setBackground(new Color(195, 243, 241));
         vocabListFrame.setVisible(true);
+        vocabListFrame.addWindowListener(this);
     }
 
 
@@ -117,8 +126,8 @@ public class VocabListWindowGUI implements ListSelectionListener {
         viewButton.addActionListener(new WordOptionListener());
         deleteButton = new JButton("delete word");
         deleteButton.addActionListener(new WordOptionListener());
-        notebookWindow.setNavigationButtonsColor(viewButton);
-        notebookWindow.setNavigationButtonsColor(deleteButton);
+        mainNotebookWindow.setNavigationButtonsColor(viewButton);
+        mainNotebookWindow.setNavigationButtonsColor(deleteButton);
 
         wordOptionPanel.add(viewButton);
         wordOptionPanel.add(deleteButton);
@@ -139,9 +148,9 @@ public class VocabListWindowGUI implements ListSelectionListener {
         backButton.addActionListener(new NavigationListener());
         saveVocabListButton.addActionListener(new NavigationListener());
         loadVocabListButton.addActionListener(new NavigationListener());
-        notebookWindow.setNavigationButtonsColor(backButton);
-        notebookWindow.setNavigationButtonsColor(saveVocabListButton);
-        notebookWindow.setNavigationButtonsColor(loadVocabListButton);
+        mainNotebookWindow.setNavigationButtonsColor(backButton);
+        mainNotebookWindow.setNavigationButtonsColor(saveVocabListButton);
+        mainNotebookWindow.setNavigationButtonsColor(loadVocabListButton);
         navigationPanel.add(backButton);
         navigationPanel.add(saveVocabListButton);
         navigationPanel.add(loadVocabListButton);
@@ -178,14 +187,53 @@ public class VocabListWindowGUI implements ListSelectionListener {
     // EFFECTS: loads VocabList from file
     private void loadVocabList() {
         try {
-            this.myVocabList = jsonReader.read();
-            this.notebookWindow.myVocabList = this.myVocabList;
+            VocabList oldList = jsonReader.read();
+            this.myVocabList = oldList.addAll(myVocabList.getVocabList());
+            //this.myVocabList = jsonReader.read();
+            this.mainNotebookWindow.myVocabList = this.myVocabList;
+
 
             System.out.println("Your Vocabulary List is LOADED from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
+
+
+
+
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        closeApplication();
+
+    }
+
+    // MODIFIES: this
+    // EFFECTS: display the confirmation dialog of quitting the program
+    private void closeApplication() {
+        String[] responses = {"Save and Quit", "No"};
+
+        int confirmed = JOptionPane.showOptionDialog(vocabListFrame,
+                "SAVE your current Vocabulary list with "
+                        + myVocabList.getSize() + " words in it?",
+                "", JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                responses,
+                1);
+
+        if (confirmed == 0) {
+            saveVocabList();
+            System.out.println(mainNotebookWindow.printLog(EventLog.getInstance()));
+            System.exit(0);
+        } else if (confirmed == 1) {
+            System.out.println(mainNotebookWindow.printLog(EventLog.getInstance()));
+            System.exit(0);
+        }
+    }
+
+
 
 
     @Override
@@ -217,6 +265,8 @@ public class VocabListWindowGUI implements ListSelectionListener {
                 vocabListScrollPane.repaint();
                 checkEmptyList();
                 loadVocabListButton.setEnabled(false);
+                mainNotebookWindow.getLoadVocabListButton().setEnabled(false);
+
 
             }
 

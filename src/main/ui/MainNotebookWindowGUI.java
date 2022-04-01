@@ -12,13 +12,14 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 // Opening Window for the Notebook, new word can be created
 public class MainNotebookWindowGUI extends WindowAdapter implements ActionListener {
     private static final String JSON_STORE = "./data/vocabList.json";
-    private static final  String JSON_BACKUP = "./data/vocabListBackupMar29.json";
-    private static final  String JSON_TEST = "./data/testGUIVocabList.json";
+    private static final String JSON_BACKUP = "./data/vocabListBackupMar29.json";
+    private static final String JSON_TEST = "./data/testGUIVocabList.json";
     private final JsonWriter jsonWriter;
     private final JsonReader jsonReader;
 
@@ -36,7 +37,7 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
     private JPanel navigationPanel;
     private JButton viewNoteBookButton;
     private JButton saveVocabListButton;
-    private JButton loadVocabListButton;
+    protected JButton loadVocabListButton;
 
 
     // constructs the Notebook window
@@ -47,12 +48,13 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
         setupDescriptionLabel();
         setupMainPanel();
         setupNavigationPanel();
-        mainFrame.add(navigationPanel,BorderLayout.SOUTH);
-        mainFrame.add(mainPanel,BorderLayout.CENTER);
+        mainFrame.add(navigationPanel, BorderLayout.SOUTH);
+        mainFrame.add(mainPanel, BorderLayout.CENTER);
         mainFrame.setVisible(true);
         myVocabList = new VocabList();
-        jsonWriter = new JsonWriter(JSON_STORE);
-        jsonReader = new JsonReader(JSON_STORE);
+        jsonWriter = new JsonWriter(JSON_TEST);
+        jsonReader = new JsonReader(JSON_TEST);
+
     }
 
     // set up the JFrame for main frame
@@ -71,10 +73,13 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
     public void setNavigationButtonsColor(JButton button) {
         //button.setBackground(new Color(245, 222, 77));
         button.setForeground(new Color(36, 36, 37));
-        button.setFont(new Font("j",Font.PLAIN,15));
+        button.setFont(new Font("j", Font.PLAIN, 15));
         button.setBorder(BorderFactory.createEtchedBorder());
     }
 
+    public JButton getLoadVocabListButton() {
+        return loadVocabListButton;
+    }
 
 
     //set up the main center panel
@@ -107,7 +112,6 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
         mvpLabel.setForeground(new Color(250, 24, 77));
         mvpLabel.setFont(new Font("MVP", Font.BOLD, 15));
     }
-
 
 
     // set up the JLabel for main frame
@@ -155,7 +159,6 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
     }
 
 
-
     // EFFECTS: saves the workroom to file
     private void saveVocabList() {
         try {
@@ -172,7 +175,8 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
     // EFFECTS: loads workroom from file
     private void loadVocabList() {
         try {
-            myVocabList = jsonReader.read();
+            VocabList oldList = jsonReader.read();
+            myVocabList = oldList.addAll(myVocabList.getVocabList());
             System.out.println("Your Vocabulary List is LOADED from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
@@ -180,23 +184,14 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
     }
 
 
-
-
-
     public String printLog(EventLog el) {
         String logText = "";
-        for (Event event: el) {
+        for (Event event : el) {
             logText = logText + event.toString() + "\n\n";
         }
         return logText;
 
     }
-
-
-
-
-
-
 
 
     @Override
@@ -218,7 +213,7 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
             saveVocabList();
         } else if (e.getSource() == loadVocabListButton) {
             loadVocabList();
-//            loadVocabListButton.setEnabled(false);
+            loadVocabListButton.setEnabled(false);
         }
 
     }
@@ -253,10 +248,6 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
         }
 
     }
-
-
-
-
 
 
 }

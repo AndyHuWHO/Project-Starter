@@ -27,6 +27,15 @@ public class VocabList implements Writeable {
 
 
     //MODIFIES: this
+    //EFFECTS: add a new word entry into VocabList
+    public VocabList addAll(ArrayList<Word> words) {
+        vocabList.addAll(words);
+        return this;
+
+    }
+
+
+    //MODIFIES: this
     //EFFECTS: remove a word of the given name from the vocab list if the word is in the list and return true
     //         if there is no word of the given name in the list, return false
     public boolean deleteWordByName(String word) {
