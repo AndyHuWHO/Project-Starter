@@ -20,8 +20,8 @@ public class VocabListWindowGUI implements ListSelectionListener {
     private final JsonWriter jsonWriter;
     private final JsonReader jsonReader;
 
-    private MainNotebookWindowGUI notebookWindow;
     private final JFrame myFrame;
+    private MainNotebookWindowGUI notebookWindow;
     private VocabList myVocabList;
 
     private JFrame vocabListFrame;

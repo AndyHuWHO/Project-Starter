@@ -51,8 +51,8 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
         mainFrame.add(mainPanel,BorderLayout.CENTER);
         mainFrame.setVisible(true);
         myVocabList = new VocabList();
-        jsonWriter = new JsonWriter(JSON_TEST);
-        jsonReader = new JsonReader(JSON_TEST);
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
     }
 
     // set up the JFrame for main frame

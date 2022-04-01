@@ -81,4 +81,16 @@ Added word: test5
 Thu Mar 31 11:13:59 PDT 2022
 Deleted word: test1
 
+### Phase 4: Task 3
+For my Model package, I only have a VocabList and a Word Class 
+right now. If I had more time, I might want to design an abstract 
+super-type called WordInfo that had a field of String because I 
+might want to have more kinds of WordInfo. Some of them might have
+pictures or videos or voice recordings, and etc. but they all have 
+a String field.
+For my GUI classes, I might want to make an abstract class for the
+basic design of my windows, because all of my windows have a Word
+field and all of them have a BorderLayout for the frame and Navigation
+Panel on the SOUTH and centerPanel in the center.
+
 
