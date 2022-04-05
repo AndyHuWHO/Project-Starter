@@ -52,8 +52,8 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
         mainFrame.add(mainPanel, BorderLayout.CENTER);
         mainFrame.setVisible(true);
         myVocabList = new VocabList();
-        jsonWriter = new JsonWriter(JSON_TEST);
-        jsonReader = new JsonReader(JSON_TEST);
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
 
     }
 
@@ -211,6 +211,8 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
             mainFrame.setVisible(false);
         } else if (e.getSource() == saveVocabListButton) {
             saveVocabList();
+            JOptionPane.showMessageDialog(mainFrame,"You have saved your Vocabulary list","Saved!",
+                    JOptionPane.INFORMATION_MESSAGE);
         } else if (e.getSource() == loadVocabListButton) {
             loadVocabList();
             loadVocabListButton.setEnabled(false);
@@ -236,7 +238,7 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 responses,
-                1);
+                0);
 
         if (confirmed == 0) {
             saveVocabList();

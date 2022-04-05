@@ -20,13 +20,13 @@ import java.io.IOException;
 // Window for view Vocabulary List in Notebook
 public class VocabListWindowGUI extends WindowAdapter implements ListSelectionListener {
     private static final String JSON_STORE = "./data/vocabList.json";
-    private static final  String JSON_BACKUP = "./data/vocabListBackupMar29.json";
-    private static final  String JSON_TEST = "./data/testGUIVocabList.json";
+    private static final String JSON_BACKUP = "./data/vocabListBackupMar29.json";
+    private static final String JSON_TEST = "./data/testGUIVocabList.json";
     private final JsonWriter jsonWriter;
     private final JsonReader jsonReader;
 
     private final JFrame myFrame;
-    private MainNotebookWindowGUI mainNotebookWindow;
+    private final MainNotebookWindowGUI mainNotebookWindow;
     private VocabList myVocabList;
 
     private JFrame vocabListFrame;
@@ -47,8 +47,8 @@ public class VocabListWindowGUI extends WindowAdapter implements ListSelectionLi
 
     //construct a new Vocabulary list viewing window
     public VocabListWindowGUI(MainNotebookWindowGUI notebookWindow) {
-        jsonWriter = new JsonWriter(JSON_TEST);
-        jsonReader = new JsonReader(JSON_TEST);
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
 
         this.myFrame = notebookWindow.mainFrame;
         this.mainNotebookWindow = notebookWindow;
@@ -58,13 +58,13 @@ public class VocabListWindowGUI extends WindowAdapter implements ListSelectionLi
         setupScrollPane();
         setupWordOptionPanel();
         setupCenterPanel();
-        vocabListFrame.add(centerPanel,BorderLayout.CENTER);
+        vocabListFrame.add(centerPanel, BorderLayout.CENTER);
         checkEmptyList();
         setupNavigationPanel();
         if (!mainNotebookWindow.loadVocabListButton.isEnabled()) {
             loadVocabListButton.setEnabled(false);
         }
-        vocabListFrame.add(navigationPanel,BorderLayout.SOUTH);
+        vocabListFrame.add(navigationPanel, BorderLayout.SOUTH);
     }
 
     //disable view and delete buttons if index is < 0
@@ -169,8 +169,6 @@ public class VocabListWindowGUI extends WindowAdapter implements ListSelectionLi
     }
 
 
-
-
     // EFFECTS: saves the workroom to file
     private void saveVocabList() {
         try {
@@ -200,9 +198,6 @@ public class VocabListWindowGUI extends WindowAdapter implements ListSelectionLi
     }
 
 
-
-
-
     @Override
     public void windowClosing(WindowEvent e) {
         closeApplication();
@@ -221,7 +216,7 @@ public class VocabListWindowGUI extends WindowAdapter implements ListSelectionLi
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 responses,
-                1);
+                0);
 
         if (confirmed == 0) {
             saveVocabList();
@@ -232,8 +227,6 @@ public class VocabListWindowGUI extends WindowAdapter implements ListSelectionLi
             System.exit(0);
         }
     }
-
-
 
 
     @Override
@@ -258,10 +251,16 @@ public class VocabListWindowGUI extends WindowAdapter implements ListSelectionLi
                 myFrame.setVisible(true);
             } else if (e.getSource() == saveVocabListButton) {
                 saveVocabList();
+                JOptionPane.showMessageDialog(vocabListFrame,
+                        "You have saved your Vocabulary list",
+                        "Saved!",
+                        JOptionPane.INFORMATION_MESSAGE);
+
             } else if (e.getSource() == loadVocabListButton) {
                 loadVocabList();
                 renderVocabListToListModel(listModel);
                 list.setModel(listModel);
+                list.setSelectedIndex(0);
                 vocabListScrollPane.repaint();
                 checkEmptyList();
                 loadVocabListButton.setEnabled(false);
@@ -277,29 +276,32 @@ public class VocabListWindowGUI extends WindowAdapter implements ListSelectionLi
         @Override
         public void actionPerformed(ActionEvent e) {
             int index = list.getSelectedIndex();
-            if (e.getSource() == viewButton) {
+            if (index == -1) {
+                System.out.println("no selection");
+            } else {
+                if (e.getSource() == viewButton) {
 
-                new WordViewingWindowGUI(myVocabList.findWordByIndex(index));
+                    new WordViewingWindowGUI(myVocabList.findWordByIndex(index));
 
 
+                } else if (e.getSource() == deleteButton) {
+                    listModel.remove(index);
+                    myVocabList.deleteWordByIndex(index);
+                    checkEmptyList();
 
-            } else if (e.getSource() == deleteButton) {
-                listModel.remove(index);
-                myVocabList.deleteWordByIndex(index);
-                checkEmptyList();
+                    int size = listModel.getSize();
 
-                int size = listModel.getSize();
+                    if (size == 0) {
+                        deleteButton.setEnabled(false);
 
-                if (size == 0) {
-                    deleteButton.setEnabled(false);
+                    } else {
+                        if (index == listModel.getSize()) {
+                            index--;
+                        }
 
-                } else {
-                    if (index == listModel.getSize()) {
-                        index--;
+                        list.setSelectedIndex(index);
+                        list.ensureIndexIsVisible(index);
                     }
-
-                    list.setSelectedIndex(index);
-                    list.ensureIndexIsVisible(index);
                 }
             }
         }

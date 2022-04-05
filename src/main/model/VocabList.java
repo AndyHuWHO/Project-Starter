@@ -27,7 +27,7 @@ public class VocabList implements Writeable {
 
 
     //MODIFIES: this
-    //EFFECTS: add a new word entry into VocabList
+    //EFFECTS: add a given list of Words to the end of the vocabList of a VocabList
     public VocabList addAll(ArrayList<Word> words) {
         vocabList.addAll(words);
         return this;
