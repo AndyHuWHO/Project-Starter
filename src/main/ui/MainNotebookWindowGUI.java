@@ -12,7 +12,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 
 
 // Opening Window for the Notebook, new word can be created
@@ -60,7 +59,7 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
     // set up the JFrame for main frame
     private void setupMainFrame() {
         mainFrame = new JFrame();
-        mainFrame.setTitle("My Vocabulary Notebook");
+        mainFrame.setTitle("My Vocabulary Profiler");
         mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         mainFrame.setSize(800, 600);
         mainFrame.setLayout(new BorderLayout());
@@ -176,7 +175,7 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
     private void loadVocabList() {
         try {
             VocabList oldList = jsonReader.read();
-            myVocabList = oldList.addAll(myVocabList.getVocabList());
+            myVocabList = oldList.addAListOfWords(myVocabList.getVocabList());
             System.out.println("Your Vocabulary List is LOADED from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);

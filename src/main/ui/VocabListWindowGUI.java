@@ -186,7 +186,7 @@ public class VocabListWindowGUI extends WindowAdapter implements ListSelectionLi
     private void loadVocabList() {
         try {
             VocabList oldList = jsonReader.read();
-            this.myVocabList = oldList.addAll(myVocabList.getVocabList());
+            this.myVocabList = oldList.addAListOfWords(myVocabList.getVocabList());
             //this.myVocabList = jsonReader.read();
             this.mainNotebookWindow.myVocabList = this.myVocabList;
 

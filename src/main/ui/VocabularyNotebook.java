@@ -111,7 +111,7 @@ public class VocabularyNotebook {
         newWord = new Word(word);
         String definitionPhaseCommand;
 
-        displayAddDefinitionMenu();
+        displayAddDefinitionMenu(newWord);
 
         definitionPhaseCommand = input.next();
 
@@ -123,7 +123,7 @@ public class VocabularyNotebook {
     }
 
     // EFFECTS: displays add definition menu options to user
-    private void displayAddDefinitionMenu() {
+    private void displayAddDefinitionMenu(Word newWord) {
         System.out.println("\nPlease enter the DEFINITION for [" + newWord.getName() + "], or:");
         System.out.println("\tm -> to main WITHOUT saving the word entry");
         System.out.println("\ts) -> to "

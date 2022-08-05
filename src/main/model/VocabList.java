@@ -10,7 +10,7 @@ import java.util.List;
 
 //VocabList is a list of Words
 public class VocabList implements Writeable {
-    ArrayList<Word> vocabList;
+    private ArrayList<Word> vocabList;
 
     //A new empty list of the word entries
     public VocabList() {
@@ -20,18 +20,17 @@ public class VocabList implements Writeable {
 
     //MODIFIES: this
     //EFFECTS: add a new word entry into VocabList
-    public void addWord(Word name) {
-        vocabList.add(name);
-        EventLog.getInstance().logEvent(new Event("Added word: " + name.getName()));
+    public void addWord(Word word) {
+        vocabList.add(word);
+        EventLog.getInstance().logEvent(new Event("Added word: " + word.getName()));
     }
 
 
     //MODIFIES: this
-    //EFFECTS: add a given list of Words to the end of the vocabList of a VocabList
-    public VocabList addAll(ArrayList<Word> words) {
+    //EFFECTS: add a given list of Words to the end of the vocabList and return the new VocabList
+    public VocabList addAListOfWords(ArrayList<Word> words) {
         vocabList.addAll(words);
         return this;
-
     }
 
 
