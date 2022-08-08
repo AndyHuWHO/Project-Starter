@@ -28,15 +28,15 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
     protected JFrame mainFrame;
 
     private JPanel mainPanel;
-    private JLabel mvpLabel;
+    private JLabel mainLabel;
     private JTextField wordTextField;
     private JButton addWordButton;
     private JLabel descriptionLabel;
 
     private JPanel navigationPanel;
-    private JButton viewNoteBookButton;
-    private JButton saveVocabListButton;
-    protected JButton loadVocabListButton;
+    private JButton viewNoteBookButton = new JButton();
+    private JButton saveVocabListButton = new JButton();
+    protected JButton loadVocabListButton = new JButton();
 
 
     // constructs the Notebook window
@@ -53,7 +53,6 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
         myVocabList = new VocabList();
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
-
     }
 
     // set up the JFrame for main frame
@@ -65,19 +64,6 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
         mainFrame.setLayout(new BorderLayout());
         mainFrame.getContentPane().setBackground(new Color(195, 243, 241));
         mainFrame.addWindowListener(this);
-
-    }
-
-    //navigation buttons specification
-    public void setNavigationButtonsColor(JButton button) {
-        //button.setBackground(new Color(245, 222, 77));
-        button.setForeground(new Color(36, 36, 37));
-        button.setFont(new Font("j", Font.PLAIN, 15));
-        button.setBorder(BorderFactory.createEtchedBorder());
-    }
-
-    public JButton getLoadVocabListButton() {
-        return loadVocabListButton;
     }
 
 
@@ -88,11 +74,10 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
         mainPanel.setLayout(null);
         mainPanel.setBackground(new Color(195, 243, 241));
 
-        mainPanel.add(mvpLabel);
+        mainPanel.add(mainLabel);
         mainPanel.add(wordTextField);
         mainPanel.add(addWordButton);
-        //mainPanel.add(descriptionLabel);
-
+        mainPanel.add(descriptionLabel);
     }
 
 
@@ -102,27 +87,25 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
         Image mvpImage = appIconImage.getImage();
         mvpImage = mvpImage.getScaledInstance(130, 70, 100);
         appIconImage = new ImageIcon(mvpImage);
-        mvpLabel = new JLabel();
-        mvpLabel.setBounds(250, 50, 300, 130);
-        mvpLabel.setIcon(appIconImage);
-        mvpLabel.setText("Your personal Vocabulary Notebook");
-        mvpLabel.setHorizontalTextPosition(JLabel.CENTER);
-        mvpLabel.setVerticalTextPosition(JLabel.BOTTOM);
-        mvpLabel.setForeground(new Color(250, 24, 77));
-        mvpLabel.setFont(new Font("MVP", Font.BOLD, 15));
+        mainLabel = new JLabel();
+        mainLabel.setBounds(250, 50, 300, 130);
+        mainLabel.setIcon(appIconImage);
+        mainLabel.setText("Your personal Vocabulary Notebook");
+        mainLabel.setHorizontalTextPosition(JLabel.CENTER);
+        mainLabel.setVerticalTextPosition(JLabel.BOTTOM);
+        mainLabel.setForeground(new Color(250, 24, 77));
+        mainLabel.setFont(new Font("MVP", Font.BOLD, 15));
     }
 
 
     // set up the JLabel for main frame
     private void setupDescriptionLabel() {
         descriptionLabel = new JLabel();
-        descriptionLabel.setBounds(150, 150, 800, 330);
+        descriptionLabel.setBounds(50, 150, 800, 330);
         descriptionLabel.setText("<html>A personalized Vocabulary Notebook that allows you to record "
-                + "the original learning context <br>for new words learned in a second language</html>");
-        //descriptionLabel.setHorizontalTextPosition(JLabel.CENTER);
-        //descriptionLabel.setVerticalTextPosition(JLabel.BOTTOM);
-        descriptionLabel.setForeground(new Color(250, 24, 77));
-        descriptionLabel.setFont(new Font("MVP", Font.PLAIN, 15));
+                + "the Original Learning Context <br>for new words learned in a second language! </html>");
+        descriptionLabel.setForeground(new Color(143, 65, 15));
+        descriptionLabel.setFont(new Font("MVP", Font.ITALIC, 15));
     }
 
     //// set up the Navigation JPanel for main frame
@@ -130,21 +113,22 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
         navigationPanel = new JPanel();
         navigationPanel.setBounds(0, 400, 600, 80);
         navigationPanel.setLayout(new GridLayout(1, 3));
-        viewNoteBookButton = new JButton("View My Notebook");
-        viewNoteBookButton.setPreferredSize(new Dimension(200, 80));
-        setNavigationButtonsColor(viewNoteBookButton);
-        saveVocabListButton = new JButton("Save My Notebook");
-        saveVocabListButton.setPreferredSize(new Dimension(200, 80));
-        loadVocabListButton = new JButton("Load My Notebook");
-        loadVocabListButton.setPreferredSize(new Dimension(200, 80));
-        setNavigationButtonsColor(saveVocabListButton);
-        setNavigationButtonsColor(loadVocabListButton);
-        viewNoteBookButton.addActionListener(this);
-        saveVocabListButton.addActionListener(this);
-        loadVocabListButton.addActionListener(this);
+        buildNavigationButton(viewNoteBookButton,"View My Notebook");
+        buildNavigationButton(saveVocabListButton,"Save My Notebook");
+        buildNavigationButton(loadVocabListButton,"Load My Notebook");
         navigationPanel.add(viewNoteBookButton);
         navigationPanel.add(saveVocabListButton);
         navigationPanel.add(loadVocabListButton);
+    }
+
+    //navigation buttons specification
+    public void buildNavigationButton(JButton button, String name) {
+        button.setText(name);
+        button.setPreferredSize(new Dimension(200, 80));
+        button.setForeground(new Color(36, 36, 37));
+        button.setFont(new Font(name, Font.PLAIN, 15));
+        button.setBorder(BorderFactory.createEtchedBorder());
+        button.addActionListener(this);
     }
 
     // set up the JTextField for main frame
@@ -222,7 +206,6 @@ public class MainNotebookWindowGUI extends WindowAdapter implements ActionListen
     @Override
     public void windowClosing(WindowEvent e) {
         closeApplication();
-
     }
 
     // MODIFIES: this

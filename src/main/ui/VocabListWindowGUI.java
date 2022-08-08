@@ -32,14 +32,14 @@ public class VocabListWindowGUI extends WindowAdapter implements ListSelectionLi
     private JFrame vocabListFrame;
 
     private JPanel navigationPanel;
-    private JButton saveVocabListButton;
-    private JButton loadVocabListButton;
-    private JButton backButton;
+    private JButton saveVocabListButton = new JButton();
+    private JButton loadVocabListButton = new JButton();
+    private JButton backButton = new JButton();
 
     private JPanel centerPanel;
     private JPanel wordOptionPanel;
-    private JButton viewButton;
-    private JButton deleteButton;
+    private JButton viewButton = new JButton();
+    private JButton deleteButton = new JButton();
     private JScrollPane vocabListScrollPane;
     private JList list;
     private DefaultListModel listModel;
@@ -122,13 +122,11 @@ public class VocabListWindowGUI extends WindowAdapter implements ListSelectionLi
         wordOptionPanel = new JPanel();
         wordOptionPanel.setBounds(400, 50, 100, 200);
         wordOptionPanel.setLayout(new GridLayout(2, 1));
-        viewButton = new JButton("view word");
-        viewButton.addActionListener(new WordOptionListener());
-        deleteButton = new JButton("delete word");
-        deleteButton.addActionListener(new WordOptionListener());
-        mainNotebookWindow.setNavigationButtonsColor(viewButton);
-        mainNotebookWindow.setNavigationButtonsColor(deleteButton);
 
+        setUpButtonColor(viewButton,"view word");
+        viewButton.addActionListener(new WordOptionListener());
+        setUpButtonColor(deleteButton,"delete word");
+        deleteButton.addActionListener(new WordOptionListener());
         wordOptionPanel.add(viewButton);
         wordOptionPanel.add(deleteButton);
     }
@@ -139,21 +137,30 @@ public class VocabListWindowGUI extends WindowAdapter implements ListSelectionLi
         navigationPanel = new JPanel();
         navigationPanel.setBounds(0, 400, 600, 80);
         navigationPanel.setLayout(new GridLayout(1, 3));
-        backButton = new JButton("Back");
+        setUpButtonColor(backButton,"Back");
         backButton.setBounds(0, 0, 200, 80);
-        saveVocabListButton = new JButton("Save My Notebook");
+        setUpButtonColor(saveVocabListButton,"Save My Notebook");
         saveVocabListButton.setPreferredSize(new Dimension(200, 80));
-        loadVocabListButton = new JButton("Load My Notebook");
+        setUpButtonColor(loadVocabListButton,"Load My Notebook");
         loadVocabListButton.setPreferredSize(new Dimension(200, 80));
         backButton.addActionListener(new NavigationListener());
         saveVocabListButton.addActionListener(new NavigationListener());
         loadVocabListButton.addActionListener(new NavigationListener());
-        mainNotebookWindow.setNavigationButtonsColor(backButton);
-        mainNotebookWindow.setNavigationButtonsColor(saveVocabListButton);
-        mainNotebookWindow.setNavigationButtonsColor(loadVocabListButton);
+
         navigationPanel.add(backButton);
         navigationPanel.add(saveVocabListButton);
         navigationPanel.add(loadVocabListButton);
+    }
+
+
+
+    public void setUpButtonColor(JButton button,String name) {
+        button.setText(name);
+        //button.setPreferredSize(new Dimension(200, 80));
+        //button.setBackground(new Color(245, 222, 77));
+        button.setForeground(new Color(36, 36, 37));
+        button.setFont(new Font("j", Font.PLAIN, 15));
+        button.setBorder(BorderFactory.createEtchedBorder());
     }
 
 
@@ -264,7 +271,7 @@ public class VocabListWindowGUI extends WindowAdapter implements ListSelectionLi
                 vocabListScrollPane.repaint();
                 checkEmptyList();
                 loadVocabListButton.setEnabled(false);
-                mainNotebookWindow.getLoadVocabListButton().setEnabled(false);
+                mainNotebookWindow.loadVocabListButton.setEnabled(false);
 
 
             }
